@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>HMAYED &middot; Cinema</title>
+  
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- refined fonts -->
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300..600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<!-- TOP BAR - with back button and centered logo -->
+<header class="top-bar">
+  <a href="index.html" class="back-btn" aria-label="Back to home">
+    <i class="fas fa-arrow-left"></i>
+  </a>
+  <a href="index.html" class="logo">HMAYED</a>
+  <a href="#bookingForm" class="nav-book-btn">Book Now</a>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <!-- VIDEO WRAPPER with artistic curved lines -->
+  <div class="video-wrapper">
+    <!-- ARTISTIC CURVED WHITE LINES -->
+    <div class="art-lines">
+      <div class="art-line curve-1"></div>
+      <div class="art-line curve-2"></div>
+      <div class="art-line curve-3"></div>
+      <div class="art-line curve-4"></div>
+    </div>
+    
+    <!-- VIDEO BLOCK - muted showcase video -->
+    <div class="video-block">
+      <div class="media-carousel" data-carousel-key="cinema" aria-label="Cinema portfolio carousel">
+        <button class="carousel-nav carousel-prev" type="button" aria-label="Previous photo">
+          <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <div class="carousel-viewport">
+          <div class="carousel-track"></div>
+        </div>
+        <button class="carousel-nav carousel-next" type="button" aria-label="Next photo">
+          <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </button>
+        <div class="carousel-dots" aria-label="Carousel pagination"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT SECTION -->
+  <div class="content-section">
+    <!-- BOOK YOUR FREE SESSION - Pro Header -->
+    <div class="book-header">
+      <h1 class="book-title">Book Your<br>Cinema Session</h1>
+      <div class="book-subtitle">Let's tell your story on screen</div>
+    </div>
+
+    <!-- BOOKING FORM -->
+    <form class="booking-form" id="bookingForm">
+      <div class="form-group">
+        <label class="form-label" for="name">Full Name</label>
+        <input type="text" id="name" name="name" class="form-input" placeholder="Your name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="businessType">Project Type</label>
+        <select id="businessType" name="businessType" class="form-input" required>
+          <option value="" disabled selected>Select your project type</option>
+          <option value="brandfilm">Brand Film</option>
+          <option value="commercial">Commercial</option>
+          <option value="musicvideo">Music Video</option>
+          <option value="eventfilm">Event Film</option>
+          <option value="documentary">Documentary</option>
+          <option value="shortfilm">Short Film</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="phone">Phone Number</label>
+        <div class="phone-row">
+          <select id="countryCode" name="countryCode" class="form-input country-code-input" required>
+            <option value="+961" selected>+961</option>
+            <option value="+1">+1</option>
+            <option value="+44">+44</option>
+            <option value="+971">+971</option>
+            <option value="+966">+966</option>
+            <option value="+20">+20</option>
+          </select>
+          <input type="tel" id="phone" name="phone" class="form-input phone-number-input" placeholder="70 123 456" inputmode="tel" autocomplete="tel-national" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span>Reserve Your Spot</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+
+      <!-- Form Message Container -->
+      <div class="form-message" id="formMessage" aria-live="polite"></div>
+    </form>
+
+    <div class="thank-you-state" id="thankYouState" aria-live="polite">
+      <h2 class="thank-you-title">Request Received</h2>
+      <p class="thank-you-text">Thanks, <span class="thank-you-name" id="thankYouName">there</span>. We received your details and will contact you within 24 hours.</p>
+    </div>
+
+    <div class="footnote">- CINEMATIC STORYTELLING -</div>
+  </div>
+  <div class="powered-by">Powered by Quantex</div>
+</main>
+
+<script src="main.js" defer></script>
+</body>
+</html>
