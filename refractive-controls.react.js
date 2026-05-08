@@ -233,13 +233,13 @@
       'div',
       { className: 'refract-stack' },
       React.createElement(RefractiveButton, {
-        href: 'content-creation.html',
+        href: 'content-creation',
         label: 'Content Creation',
         className: 'lt-button refract-btn',
         iconClass: 'fas fa-video'
       }),
       React.createElement(RefractiveButton, {
-        href: 'cinema.html',
+        href: 'cinema',
         label: 'Cinema',
         className: 'lt-button refract-btn',
         iconClass: 'fas fa-film'

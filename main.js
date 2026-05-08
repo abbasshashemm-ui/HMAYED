@@ -563,7 +563,7 @@ function initBookingPage(config) {
       }, 420);
 
       setTimeout(() => {
-        window.location.href = `thank-you.html?session=${encodeURIComponent(config.sessionName)}&name=${encodeURIComponent(name)}`;
+        window.location.href = `thank-you?session=${encodeURIComponent(config.sessionName)}&name=${encodeURIComponent(name)}`;
       }, 900);
       submissionSucceeded = true;
     } catch (_) {
@@ -649,14 +649,14 @@ function initThankYouPage() {
   const name = params.get('name') || '';
 
   let sessionLabel = 'Session';
-  let backHref = 'content-creation.html';
+  let backHref = 'content-creation';
 
   if (session.includes('cinema')) {
     sessionLabel = 'Cinema Session';
-    backHref = 'cinema.html';
+    backHref = 'cinema';
   } else if (session.includes('content')) {
     sessionLabel = 'Content Session';
-    backHref = 'content-creation.html';
+    backHref = 'content-creation';
   }
 
   if (name) {
@@ -686,13 +686,13 @@ function initScrollReveal() {
 (function bootstrap() {
   initHomePage();
   initBookingPage({
-    pageFile: 'content-creation.html',
+    pageFile: 'content-creation',
     sessionName: 'Content Session',
     leadFieldKey: 'business_type',
     carouselKey: 'content'
   });
   initBookingPage({
-    pageFile: 'cinema.html',
+    pageFile: 'cinema',
     sessionName: 'Cinema Session',
     leadFieldKey: 'project_type',
     carouselKey: 'cinema'
