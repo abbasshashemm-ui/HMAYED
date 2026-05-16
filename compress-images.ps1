@@ -1,3 +1,6 @@
+# Prefer generate-display-assets.ps1 — it keeps full-resolution originals
+# and only adds -display.jpg files sized for the carousel (1080px @ Q92).
+
 param(
   [int]$Quality = 78,
   [int]$MaxWidth = 1920,
