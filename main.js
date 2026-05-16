@@ -28,9 +28,8 @@ function prefersLightMedia() {
 }
 
 function carouselSizesFor(key) {
-  if (key === 'podcast') return '(max-width: 680px) 90vw, 468px';
-  if (key === 'cinema') return '(max-width: 680px) 85vw, 520px';
-  return '(max-width: 680px) 86vw, 400px';
+  if (key === 'podcast') return '(max-width: 680px) 94vw, 585px';
+  return '(max-width: 680px) 85vw, 520px';
 }
 
 const SUBMIT_ICONS = {

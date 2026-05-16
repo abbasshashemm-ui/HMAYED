@@ -288,51 +288,20 @@ body::after {
   z-index: 2;
 }
 
-/* Default media carousel sizing (fallback) */
+/* Default media carousel sizing (e.g. podcast) */
 .video-block:has(.media-carousel) {
   width: min(94vw, calc(var(--max-card) * 0.65)) !important;
   max-width: calc(var(--max-card) * 0.65) !important;
   aspect-ratio: 16 / 9 !important;
 }
 
-/* Cinema portrait carousel */
+/* Portrait media carousel sizing (Talking Head, Food, Cinema) */
+.video-block:has(.media-carousel[data-carousel-key="talking-head"]),
+.video-block:has(.media-carousel[data-carousel-key="food"]),
 .video-block:has(.media-carousel[data-carousel-key="cinema"]) {
   width: min(85vw, 520px) !important;
   max-width: 520px !important;
   aspect-ratio: 4 / 5 !important;
-}
-
-/* Content creation — smaller frames, full image (no crop) */
-.video-block:has(.media-carousel[data-carousel-key="talking-head"]),
-.video-block:has(.media-carousel[data-carousel-key="food"]) {
-  width: min(80vw, 400px) !important;
-  max-width: 400px !important;
-  aspect-ratio: 4 / 5 !important;
-}
-
-.video-block:has(.media-carousel[data-carousel-key="podcast"]) {
-  width: min(88vw, calc(var(--max-card) * 0.52)) !important;
-  max-width: calc(var(--max-card) * 0.52) !important;
-  aspect-ratio: 16 / 9 !important;
-}
-
-.video-block:has(.media-carousel[data-carousel-key="talking-head"]) .carousel-slide,
-.video-block:has(.media-carousel[data-carousel-key="podcast"]) .carousel-slide,
-.video-block:has(.media-carousel[data-carousel-key="food"]) .carousel-slide {
-  left: 18%;
-  width: 64%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.video-block:has(.media-carousel[data-carousel-key="talking-head"]) .carousel-slide img,
-.video-block:has(.media-carousel[data-carousel-key="podcast"]) .carousel-slide img,
-.video-block:has(.media-carousel[data-carousel-key="food"]) .carousel-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
 }
 
 .hero-video {
@@ -1054,17 +1023,6 @@ select.form-input option {
     bottom: 8px;
     gap: 7px;
     padding: 5px 9px;
-  }
-
-  .video-block:has(.media-carousel[data-carousel-key="talking-head"]),
-  .video-block:has(.media-carousel[data-carousel-key="food"]) {
-    width: min(86vw, 340px) !important;
-    max-width: 340px !important;
-  }
-
-  .video-block:has(.media-carousel[data-carousel-key="podcast"]) {
-    width: min(90vw, 520px) !important;
-    max-width: 520px !important;
   }
 }
 
