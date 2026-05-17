@@ -38,6 +38,8 @@
     svg.setAttribute('aria-hidden', 'true');
     if (name === 'video') {
       svg.innerHTML = '<path fill="currentColor" d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Zm2.5-.5a.5.5 0 0 0-.5.5v7.8l7.2-4.05L6.5 6Zm8.2 4.05L18.5 14.2V6.5a.5.5 0 0 0-.5-.5H14.7Z"></path>';
+    } else if (name === 'about') {
+      svg.innerHTML = '<path fill="currentColor" d="M12 12a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5ZM5 20.5a7 7 0 0 1 14 0v.5H5v-.5Z"></path>';
     } else {
       svg.innerHTML = '<path fill="currentColor" d="M4 5.5A1.5 1.5 0 0 1 5.5 4h2.18l1-2h6.64l1 2H18.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13ZM12 8a4.5 4.5 0 1 0 .001 9.001A4.5 4.5 0 0 0 12 8Z"></path>';
     }
@@ -49,26 +51,8 @@
   let rafId = 0;
   let lastPaint = 0;
 
-  function updateSurface(event, element, pressed) {
-    const rect = element.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    const dx = x - 50;
-    const dy = y - 50;
-    const energy = Math.max(0, 1 - (Math.sqrt(dx * dx + dy * dy) / 72));
-    element.style.setProperty('--mx', x.toFixed(2) + '%');
-    element.style.setProperty('--my', y.toFixed(2) + '%');
-    element.style.setProperty('--energy', energy.toFixed(3));
-    element.style.setProperty('--corner', (14 + energy * 24 + (pressed ? 6 : 0)).toFixed(2) + 'px');
+  function setPressed(element, pressed) {
     element.style.setProperty('--press', pressed ? '1' : '0');
-  }
-
-  function resetSurface(element) {
-    element.style.setProperty('--mx', '50%');
-    element.style.setProperty('--my', '50%');
-    element.style.setProperty('--energy', '0');
-    element.style.setProperty('--corner', '20px');
-    element.style.setProperty('--press', '0');
   }
 
   function createButton(config) {
@@ -99,46 +83,33 @@
       anim: { x: 50, y: 50, e: 0.2, vx: 0, vy: 0, ve: 0 }
     };
 
-    if (!config.target && !String(config.href).startsWith('http')) {
-      link.addEventListener('pointerenter', () => {
-        if (link.dataset.prefetched === '1') return;
-        link.dataset.prefetched = '1';
-        const hint = document.createElement('link');
-        hint.rel = 'prefetch';
-        hint.as = 'document';
-        hint.href = config.href;
-        document.head.appendChild(hint);
-      }, { once: true });
-    }
-
     link.addEventListener('pointermove', (event) => {
       const rect = link.getBoundingClientRect();
       const x = ((event.clientX - rect.left) / rect.width) * 100;
       const y = ((event.clientY - rect.top) / rect.height) * 100;
       state.target = { x, y, energy: Math.max(0, 1 - (Math.hypot(x - 50, y - 50) / 66)) };
-      updateSurface(event, link, state.pressed);
     });
 
     link.addEventListener('pointerleave', () => {
       state.pressed = false;
       state.target.energy = 0.16;
-      resetSurface(link);
+      setPressed(link, false);
     });
 
-    link.addEventListener('pointerdown', (event) => {
+    link.addEventListener('pointerdown', () => {
       state.pressed = true;
-      updateSurface(event, link, true);
+      setPressed(link, true);
     });
 
-    link.addEventListener('pointerup', (event) => {
+    link.addEventListener('pointerup', () => {
       state.pressed = false;
-      updateSurface(event, link, false);
+      setPressed(link, false);
     });
 
     link.addEventListener('blur', () => {
       state.pressed = false;
       state.target.energy = 0.16;
-      resetSurface(link);
+      setPressed(link, false);
     });
 
     buttons.push(state);
@@ -205,6 +176,13 @@
     label: 'Cinema',
     className: 'lt-button refract-btn',
     icon: 'film'
+  }));
+
+  stack.appendChild(createButton({
+    href: 'about',
+    label: 'About Me',
+    className: 'lt-button refract-btn',
+    icon: 'about'
   }));
 
   const socialRow = document.createElement('div');

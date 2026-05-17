@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#f4f7fc">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>HMAYED &middot; Cinema</title>
   <link rel="icon" type="image/png" href="favicon.png">
-  
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link rel="stylesheet" href="main.css">
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
@@ -16,36 +15,28 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 </head>
 <body>
-<!-- TOP BAR - with back button and centered logo -->
-<header class="top-bar">
-  <a href="/" class="back-btn" aria-label="Back to home">
-    <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15 4 7.4 12 15 20l-1.4 1.4-7.6-7.6 7.6-7.6L15 4z"/></svg>
-  </a>
-  <a href="/" class="logo">HMAYED</a>
-  <a href="#bookingForm" class="nav-book-btn">Book Now</a>
-</header>
-
-<!-- MAIN CONTENT -->
-<main class="main">
-  <!-- VIDEO WRAPPER with artistic curved lines -->
+  <header class="top-bar">
+    <a href="/" class="back-btn" aria-label="Back to home">
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15 4 7.4 12 15 20l-1.4 1.4-7.6-7.6 7.6-7.6L15 4z"/></svg>
+    </a>
+    <a href="/" class="logo">HMAYED</a>
+    <a href="#bookingForm" class="nav-book-btn">Book Now</a>
+  </header>
+  <main class="main">
+  <div class="section-divider" aria-hidden="true"><span>Cinema</span></div>
   <div class="video-wrapper">
-    <!-- ARTISTIC CURVED WHITE LINES -->
-    <div class="art-lines">
+    <div class="art-lines" aria-hidden="true">
       <div class="art-line curve-1"></div>
       <div class="art-line curve-2"></div>
       <div class="art-line curve-3"></div>
       <div class="art-line curve-4"></div>
     </div>
-    
-    <!-- VIDEO BLOCK - muted showcase video -->
     <div class="video-block">
       <div class="media-carousel" data-carousel-key="cinema" aria-label="Cinema portfolio carousel">
         <button class="carousel-nav carousel-prev" type="button" aria-label="Previous photo">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 6l-6 6 6 6 1.4-1.4-4.6-4.6 4.6-4.6L14 6z"/></svg>
         </button>
-        <div class="carousel-viewport">
-          <div class="carousel-track"></div>
-        </div>
+        <div class="carousel-viewport"><div class="carousel-track"></div></div>
         <button class="carousel-nav carousel-next" type="button" aria-label="Next photo">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 6l6 6-6 6-1.4-1.4 4.6-4.6-4.6-4.6L10 6z"/></svg>
         </button>
@@ -54,21 +45,16 @@
     </div>
   </div>
 
-  <!-- CONTENT SECTION -->
   <div class="content-section">
-    <!-- BOOK YOUR FREE SESSION - Pro Header -->
     <div class="book-header">
       <h1 class="book-title">Book Your<br>Cinema Session</h1>
       <div class="book-subtitle">Let's tell your story on screen</div>
     </div>
-
-    <!-- BOOKING FORM -->
     <form class="booking-form" id="bookingForm">
       <div class="form-group">
         <label class="form-label" for="name">Full Name</label>
         <input type="text" id="name" name="name" class="form-input" placeholder="Your name" required>
       </div>
-
       <div class="form-group">
         <label class="form-label" for="businessType">Project Type</label>
         <select id="businessType" name="businessType" class="form-input" required>
@@ -82,7 +68,6 @@
           <option value="other">Other</option>
         </select>
       </div>
-
       <div class="form-group">
         <label class="form-label" for="phone">Phone Number</label>
         <div class="phone-row">
@@ -97,32 +82,24 @@
           <input type="tel" id="phone" name="phone" class="form-input phone-number-input" placeholder="70 123 456" inputmode="tel" autocomplete="tel-national" required>
         </div>
       </div>
-
       <div class="form-group">
         <label class="form-label" for="email">Email Address</label>
         <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required>
       </div>
-
-      <!-- Submit Button -->
       <button type="submit" class="submit-btn" id="submitBtn">
         <span>Reserve Your Spot</span>
         <span class="submit-icon" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M13 5l7 7-7 7-1.4-1.4 5.6-5.6H4v-2h13.2l-5.6-5.6L13 5z"/></svg></span>
       </button>
-
-      <!-- Form Message Container -->
       <div class="form-message" id="formMessage" aria-live="polite"></div>
     </form>
-
     <div class="thank-you-state" id="thankYouState" aria-live="polite">
       <h2 class="thank-you-title">Request Received</h2>
       <p class="thank-you-text">Thanks, <span class="thank-you-name" id="thankYouName">there</span>. We received your details and will contact you within 24 hours.</p>
     </div>
-
     <div class="footnote">- CINEMATIC STORYTELLING -</div>
   </div>
   <div class="powered-by">Powered by Quantex</div>
 </main>
-
 <script src="main.js" defer></script>
 </body>
 </html>

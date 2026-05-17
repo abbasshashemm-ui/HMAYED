@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#f4f7fc">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>HMAYED &middot; Cinema</title>
   <link rel="icon" type="image/png" href="favicon.png">
-
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link rel="preload" href="hero-poster.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="main.css">
@@ -17,26 +15,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 </head>
-
 <body>
-
-  <!-- ambient environment layers -->
   <div class="env-ambient" aria-hidden="true"></div>
   <div class="env-vignette" aria-hidden="true"></div>
 
-  <!-- BLACK RIBBON - centered logo -->
   <header class="top-bar top-bar-home">
     <a href="/" class="logo">HMAYED</a>
   </header>
 
-  <!-- MAIN CONTENT -->
   <main class="main">
-
-    <!-- VIDEO WRAPPER with artistic curved lines -->
     <div class="video-wrapper">
-
-      <!-- ARTISTIC CURVED WHITE LINES -->
-      <div class="art-lines">
+      <div class="art-lines" aria-hidden="true">
         <div class="art-line curve-1"></div>
         <div class="art-line curve-2"></div>
         <div class="art-line curve-3"></div>
@@ -44,52 +33,35 @@
         <div class="art-line curve-5"></div>
       </div>
 
-
-
-      <!-- VIDEO BLOCK - mobile-optimized -->
       <div class="video-block">
         <video class="hero-video" playsinline muted autoplay loop preload="none" poster="hero-poster.jpg">
           <source data-src="main.webm" type="video/webm">
           <source data-src="main.mp4" type="video/mp4">
-          Your browser does not support the video tag.
         </video>
-
-        <!-- UNMUTE BUTTON - mobile-friendly -->
-        <button class="unmute-btn" id="unmuteBtn">
+        <button class="unmute-btn" id="unmuteBtn" type="button">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4.5 7 8.5v7l5 4V4.5Zm1 2.4 2.8 2.2H18v3.8h-2.2L13 15.1V6.9ZM5 9.5H7v5H5v-5Z"/></svg>
           <span>Sound</span>
         </button>
-
-        <!-- REPLAY BUTTON - centered -->
-        <button class="replay-btn" id="replayBtn">
+        <button class="replay-btn" id="replayBtn" type="button" aria-label="Replay video">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 5a7 7 0 1 1-4.95 11.95l1.06-1.06A5.5 5.5 0 1 0 12 6.5V9l4-3.5-4-3.5v2.5Z"/></svg>
         </button>
       </div>
     </div>
 
-    <div class="section-divider" aria-hidden="true">
-      <span>Explore</span>
-    </div>
-    <!-- LINKTREE-STYLE BUTTONS -->
+    <div class="section-divider" aria-hidden="true"><span>Explore</span></div>
+
     <div class="links-section">
-      <!-- CINEMATIC 3D BACKGROUND -->
-      <div class="wild-3d-bg cinematic">
-        <!-- Minimalist Cinematic Stage Spotlights -->
-        <div class="spotlight spot-left"></div>
-        <div class="spotlight spot-right"></div>
-        <div class="spotlight spot-center"></div>
+      <div class="links-foreground">
+        <div id="refractiveControlsRoot"></div>
+        <div class="footnote">- CINEMA -</div>
       </div>
-
-      <div id="refractiveControlsRoot"></div>
-
-      <div class="footnote">- CINEMA -</div>
     </div>
 
     <div class="powered-by">Powered by Quantex AI Solutions</div>
   </main>
 
+  <script defer src="studio-stage.js"></script>
   <script defer src="refractive-controls.js"></script>
   <script defer src="main.js"></script>
 </body>
-
 </html>
