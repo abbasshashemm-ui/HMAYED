@@ -2,6 +2,8 @@
   const section = document.querySelector('.links-section');
   if (!section || section.querySelector('.studio-stage')) return;
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   function el(tag, className) {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -11,8 +13,43 @@
   function svgProp(className, depth, markup) {
     const prop = el('div', `studio-prop ${className}`);
     prop.dataset.depth = String(depth);
-    prop.innerHTML = markup;
+    prop.appendChild(el('div', 'studio-prop-shadow'));
+    const body = el('div', 'studio-prop-body');
+    body.innerHTML = markup;
+    prop.appendChild(body);
     return prop;
+  }
+
+  function particleLayer(count) {
+    const layer = el('div', 'studio-particles');
+    for (let i = 0; i < count; i += 1) {
+      const p = el('span', 'studio-particle');
+      const size = 2 + Math.random() * 3;
+      p.style.setProperty('--p-x', `${8 + Math.random() * 84}%`);
+      p.style.setProperty('--p-y', `${12 + Math.random() * 76}%`);
+      p.style.setProperty('--p-size', `${size}px`);
+      p.style.setProperty('--p-delay', `${-(Math.random() * 14).toFixed(2)}s`);
+      p.style.setProperty('--p-duration', `${10 + Math.random() * 12}s`);
+      p.style.setProperty('--p-drift', `${-16 - Math.random() * 28}px`);
+      layer.appendChild(p);
+    }
+    return layer;
+  }
+
+  function bokehLayer(count) {
+    const layer = el('div', 'studio-bokeh');
+    for (let i = 0; i < count; i += 1) {
+      const orb = el('span', 'studio-bokeh-orb');
+      const size = 40 + Math.random() * 100;
+      orb.style.setProperty('--b-x', `${Math.random() * 100}%`);
+      orb.style.setProperty('--b-y', `${Math.random() * 100}%`);
+      orb.style.setProperty('--b-size', `${size}px`);
+      orb.style.setProperty('--b-delay', `${-(Math.random() * 10).toFixed(2)}s`);
+      orb.style.setProperty('--b-opacity', `${0.04 + Math.random() * 0.08}`);
+      orb.style.setProperty('--b-duration', `${14 + Math.random() * 10}s`);
+      layer.appendChild(orb);
+    }
+    return layer;
   }
 
   const SVGS = {
@@ -24,17 +61,31 @@
 
   const stage = el('div', 'studio-stage');
   stage.setAttribute('aria-hidden', 'true');
+
   stage.appendChild(el('div', 'studio-floor'));
+  stage.appendChild(el('div', 'studio-floor-sheen'));
   stage.appendChild(el('div', 'studio-grid-glow'));
+  stage.appendChild(el('div', 'studio-depth-mist'));
 
   const wild = el('div', 'wild-3d-bg cinematic');
-  ['spot-left', 'spot-right', 'spot-center'].forEach((name) => {
+  ['spot-left', 'spot-right', 'spot-center', 'spot-accent'].forEach((name) => {
     wild.appendChild(el('div', `spotlight ${name}`));
   });
   stage.appendChild(wild);
 
+  const rays = el('div', 'studio-rays');
+  ['studio-ray studio-ray-1', 'studio-ray studio-ray-2', 'studio-ray studio-ray-3'].forEach((cls) => {
+    rays.appendChild(el('div', cls));
+  });
+  stage.appendChild(rays);
+
+  if (!reducedMotion) {
+    stage.appendChild(bokehLayer(7));
+    stage.appendChild(particleLayer(28));
+  }
+
   const geometry = el('div', 'studio-geometry');
-  ['geo-arc geo-arc-1', 'geo-line geo-line-1', 'geo-line geo-line-2'].forEach((cls) => {
+  ['geo-arc geo-arc-1', 'geo-arc geo-arc-2', 'geo-line geo-line-1', 'geo-line geo-line-2'].forEach((cls) => {
     geometry.appendChild(el('span', cls));
   });
   stage.appendChild(geometry);
@@ -45,10 +96,17 @@
   props.appendChild(svgProp('prop-softbox', 0.72, SVGS.softbox));
   props.appendChild(svgProp('prop-tripod', 0.32, SVGS.tripod));
   stage.appendChild(props);
+
+  const glow = el('div', 'studio-prop-glows');
+  glow.appendChild(el('div', 'studio-glow studio-glow-camera'));
+  glow.appendChild(el('div', 'studio-glow studio-glow-softbox'));
+  stage.appendChild(glow);
+
   stage.appendChild(el('div', 'studio-fog'));
+  stage.appendChild(el('div', 'studio-vignette-depth'));
   section.insertBefore(stage, section.firstChild);
 
   props.querySelectorAll('.studio-prop[data-depth]').forEach((prop, index) => {
-    prop.style.setProperty('--float-delay', `${index * -2.1}s`);
+    prop.style.setProperty('--float-delay', `${index * -2.4}s`);
   });
 })();

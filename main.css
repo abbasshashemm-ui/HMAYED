@@ -665,6 +665,17 @@ body::after {
   letter-spacing: 0.01em;
 }
 
+.about-body + .about-body {
+  margin-top: 1.25em;
+}
+
+.about-cta {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .booking-form {
   display: flex;
   flex-direction: column;
@@ -991,28 +1002,64 @@ select.form-input option {
 .studio-stage {
   position: absolute;
   inset: -12px -28px -28px;
-  perspective: 1100px;
-  perspective-origin: 50% 42%;
+  perspective: 820px;
+  perspective-origin: calc(50% + (var(--env-x, 0.5) - 0.5) * 8%) calc(42% + (var(--env-y, 0.35) - 0.5) * 6%);
   overflow: hidden;
   border-radius: var(--radius-xl);
   pointer-events: none;
   z-index: 0;
+  transform-style: preserve-3d;
 }
 
 .studio-floor {
   position: absolute;
   left: 50%;
   bottom: -8%;
-  width: 160%;
-  height: 62%;
-  transform: translateX(-50%) rotateX(74deg);
+  width: 180%;
+  height: 68%;
+  transform: translateX(-50%) rotateX(78deg) translateZ(-120px);
   transform-origin: center bottom;
   background:
-    linear-gradient(180deg, rgba(148, 163, 184, 0.12) 0%, transparent 48%),
-    repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.045) 0 1px, transparent 1px 64px),
-    repeating-linear-gradient(0deg, rgba(15, 23, 42, 0.035) 0 1px, transparent 1px 64px);
-  opacity: 0.42;
-  mask-image: radial-gradient(85% 70% at 50% 100%, #000 25%, transparent 72%);
+    linear-gradient(180deg, rgba(148, 163, 184, 0.16) 0%, transparent 52%),
+    repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.055) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(0deg, rgba(15, 23, 42, 0.04) 0 1px, transparent 1px 56px);
+  opacity: 0.5;
+  mask-image: radial-gradient(88% 72% at 50% 100%, #000 18%, transparent 74%);
+}
+
+.studio-floor-sheen {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  width: 120%;
+  height: 38%;
+  transform: translateX(-50%) rotateX(82deg) translateZ(-80px);
+  transform-origin: center bottom;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.35) 48%,
+    rgba(255, 255, 255, 0.08) 52%,
+    transparent 62%
+  );
+  opacity: 0.55;
+  animation: studio-sheen 9s ease-in-out infinite;
+  mask-image: radial-gradient(70% 80% at 50% 100%, #000 20%, transparent 70%);
+}
+
+@keyframes studio-sheen {
+  0%, 100% { opacity: 0.35; transform: translateX(-58%) rotateX(82deg) translateZ(-80px); }
+  50% { opacity: 0.65; transform: translateX(-42%) rotateX(82deg) translateZ(-80px); }
+}
+
+.studio-depth-mist {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(70% 55% at calc(var(--env-x, 0.5) * 100%) calc(30% + var(--env-y, 0.35) * 40%), rgba(255, 255, 255, 0.5), transparent 65%),
+    linear-gradient(180deg, rgba(241, 245, 249, 0) 0%, rgba(226, 232, 240, 0.35) 88%, rgba(203, 213, 225, 0.55) 100%);
+  opacity: calc(0.55 + var(--env-e, 0.25) * 0.25);
 }
 
 .studio-grid-glow {
@@ -1045,28 +1092,134 @@ select.form-input option {
   bottom: -24%;
   width: 20vw;
   max-width: 180px;
-  height: 140%;
-  background: linear-gradient(to top, rgba(248, 250, 252, 0.5) 0%, rgba(226, 232, 240, 0.12) 42%, transparent 78%);
+  height: 150%;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.55) 0%, rgba(229, 169, 60, 0.08) 35%, transparent 78%);
   transform-origin: bottom center;
-  filter: blur(36px);
+  filter: blur(40px);
   mix-blend-mode: soft-light;
-  opacity: 0.65;
+  opacity: calc(0.5 + var(--env-e, 0.25) * 0.35);
   animation: spot-sweep 18s ease-in-out infinite alternate;
 }
 
-.spot-left { left: 4%; animation-delay: -4s; animation-duration: 20s; }
-.spot-right { right: 4%; animation-delay: -9s; animation-duration: 22s; }
+.spot-left { left: 2%; animation-delay: -4s; animation-duration: 20s; }
+.spot-right { right: 2%; animation-delay: -9s; animation-duration: 22s; }
 .spot-center {
-  left: 36%;
-  width: 28vw;
-  max-width: 240px;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.42) 0%, transparent 76%);
+  left: 34%;
+  width: 30vw;
+  max-width: 260px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.48) 0%, transparent 76%);
   animation-duration: 26s;
 }
 
+.spot-accent {
+  left: 50%;
+  width: 38vw;
+  max-width: 340px;
+  background: linear-gradient(to top, rgba(255, 248, 235, 0.35) 0%, rgba(229, 169, 60, 0.12) 40%, transparent 80%);
+  animation: spot-sweep-center 24s ease-in-out infinite alternate;
+  animation-delay: -6s;
+  opacity: calc(0.35 + var(--env-e, 0.25) * 0.3);
+}
+
 @keyframes spot-sweep {
-  0% { transform: rotate(-18deg) scaleX(0.92); }
-  100% { transform: rotate(18deg) scaleX(1.06); }
+  0% { transform: rotate(-20deg) scaleX(0.9); }
+  100% { transform: rotate(20deg) scaleX(1.08); }
+}
+
+@keyframes spot-sweep-center {
+  0% { transform: translateX(-50%) rotate(-16deg) scaleX(0.92); }
+  100% { transform: translateX(-50%) rotate(16deg) scaleX(1.06); }
+}
+
+.studio-rays {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: calc(0.45 + var(--env-e, 0.25) * 0.35);
+}
+
+.studio-ray {
+  position: absolute;
+  top: -20%;
+  height: 130%;
+  width: 18%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.04) 45%, transparent 100%);
+  filter: blur(12px);
+  transform-origin: top center;
+  animation: studio-ray-drift 14s ease-in-out infinite alternate;
+}
+
+.studio-ray-1 { left: 18%; transform: rotate(-14deg); animation-delay: -2s; }
+.studio-ray-2 { left: 48%; width: 22%; transform: rotate(4deg); animation-delay: -5s; animation-duration: 18s; }
+.studio-ray-3 { right: 12%; transform: rotate(16deg); animation-delay: -8s; animation-duration: 20s; }
+
+@keyframes studio-ray-drift {
+  0% { opacity: 0.35; transform: rotate(var(--ray-tilt, -12deg)) scaleX(0.92); }
+  100% { opacity: 0.7; transform: rotate(calc(var(--ray-tilt, -12deg) + 8deg)) scaleX(1.05); }
+}
+
+.studio-ray-1 { --ray-tilt: -14deg; }
+.studio-ray-2 { --ray-tilt: 4deg; }
+.studio-ray-3 { --ray-tilt: 16deg; }
+
+.studio-bokeh {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.studio-bokeh-orb {
+  position: absolute;
+  left: var(--b-x, 50%);
+  top: var(--b-y, 50%);
+  width: var(--b-size, 60px);
+  height: var(--b-size, 60px);
+  margin-left: calc(var(--b-size, 60px) / -2);
+  margin-top: calc(var(--b-size, 60px) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(229, 169, 60, 0.15) 40%, transparent 70%);
+  opacity: var(--b-opacity, 0.06);
+  filter: blur(8px);
+  animation: studio-bokeh-float var(--b-duration, 16s) ease-in-out infinite;
+  animation-delay: var(--b-delay, 0s);
+}
+
+@keyframes studio-bokeh-float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(12px, -18px, 0) scale(1.08); }
+}
+
+.studio-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.studio-particle {
+  position: absolute;
+  left: var(--p-x, 50%);
+  top: var(--p-y, 50%);
+  width: var(--p-size, 2px);
+  height: var(--p-size, 2px);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  animation: studio-particle-rise var(--p-duration, 14s) linear infinite;
+  animation-delay: var(--p-delay, 0s);
+}
+
+@keyframes studio-particle-rise {
+  0% { opacity: 0; transform: translate3d(0, 0, 0); }
+  12% { opacity: 0.7; }
+  88% { opacity: 0.35; }
+  100% { opacity: 0; transform: translate3d(8px, var(--p-drift, -24px), 0); }
 }
 
 .studio-geometry {
@@ -1088,10 +1241,21 @@ select.form-input option {
   height: 36%;
   left: 50%;
   bottom: 10%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(-40px);
   border-bottom: none;
   border-color: rgba(100, 116, 139, 0.12);
   opacity: 0.45;
+}
+
+.geo-arc-2 {
+  width: min(56%, 480px);
+  height: 24%;
+  left: 50%;
+  bottom: 16%;
+  transform: translateX(-50%) translateZ(-20px);
+  border-bottom: none;
+  border-color: rgba(229, 169, 60, 0.1);
+  opacity: 0.32;
 }
 
 .geo-line-1,
@@ -1118,30 +1282,100 @@ select.form-input option {
   --px: calc((var(--env-x, 0.5) - 0.5) * 2);
   --py: calc((var(--env-y, 0.35) - 0.5) * 2);
   --depth: 0.5;
+  --depth-scale: calc(0.78 + (var(--depth) * 0.26));
+  --depth-blur: calc((1 - var(--depth)) * 1.8px);
   position: absolute;
   transform-style: preserve-3d;
   transform:
     translate3d(
-      calc(var(--px) * (14px + (var(--depth) * 22px))),
-      calc(var(--py) * (10px + (var(--depth) * 14px))),
-      calc(-60px - (var(--depth) * 100px))
+      calc(var(--px) * (18px + (var(--depth) * 32px))),
+      calc(var(--py) * (12px + (var(--depth) * 20px))),
+      calc(-30px - (var(--depth) * 180px))
     )
-    rotateX(calc(var(--py) * -6deg))
-    rotateY(calc(var(--px) * 8deg))
-    rotateZ(var(--rz, 0deg));
-  filter:
-    drop-shadow(0 20px 32px rgba(15, 23, 42, 0.14))
-    drop-shadow(0 4px 8px rgba(15, 23, 42, 0.08));
+    rotateX(calc(var(--py) * -10deg + 4deg))
+    rotateY(calc(var(--px) * 12deg))
+    rotateZ(var(--rz, 0deg))
+    scale(var(--depth-scale));
   animation: studio-float 14s ease-in-out infinite;
   animation-delay: var(--float-delay, 0s);
   will-change: transform;
-  opacity: calc(0.42 + (var(--depth) * 0.48));
+  opacity: calc(0.38 + (var(--depth) * 0.55));
 }
 
-.studio-prop svg {
+.studio-prop-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -6%;
+  width: 72%;
+  height: 14%;
+  transform: translateX(-50%) rotateX(82deg) translateZ(-2px);
+  background: radial-gradient(ellipse, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.08) 55%, transparent 72%);
+  filter: blur(calc(2px + (1 - var(--depth)) * 4px));
+  opacity: calc(0.35 + var(--depth) * 0.45);
+}
+
+.studio-prop-body {
+  position: relative;
+  z-index: 1;
+  transform: translateZ(calc(var(--depth) * 24px));
+  filter:
+    drop-shadow(0 28px 40px rgba(15, 23, 42, calc(0.08 + var(--depth) * 0.12)))
+    drop-shadow(0 8px 16px rgba(15, 23, 42, 0.1))
+    blur(var(--depth-blur));
+}
+
+.studio-prop-body svg {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+.studio-prop-glows {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.studio-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(28px);
+  mix-blend-mode: soft-light;
+  animation: studio-glow-pulse 6s ease-in-out infinite;
+}
+
+.studio-glow-camera {
+  left: 8%;
+  top: 28%;
+  width: 42%;
+  height: 28%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, transparent 70%);
+}
+
+.studio-glow-softbox {
+  left: 0;
+  bottom: 22%;
+  width: 38%;
+  height: 32%;
+  background: radial-gradient(circle, rgba(255, 248, 235, 0.45) 0%, transparent 72%);
+  animation-delay: -2.5s;
+}
+
+@keyframes studio-glow-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.95); }
+  50% { opacity: 0.85; transform: scale(1.05); }
+}
+
+.studio-vignette-depth {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 85% at 50% 35%, transparent 30%, rgba(241, 245, 249, 0.25) 70%, rgba(226, 232, 240, 0.65) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 28%);
 }
 
 .prop-camera {
@@ -1170,15 +1404,32 @@ select.form-input option {
   right: 12%;
   bottom: 18%;
   --rz: 6deg;
-  filter:
-    drop-shadow(0 12px 20px rgba(15, 23, 42, 0.1))
-    blur(0.4px);
-  opacity: 0.38;
+  --depth-scale: calc(0.72 + (var(--depth) * 0.2));
+}
+
+.prop-light-rig .studio-prop-body::after {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: 10%;
+  width: 80%;
+  height: 120%;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.25) 0%, transparent 55%);
+  pointer-events: none;
+  mix-blend-mode: overlay;
 }
 
 @keyframes studio-float {
-  0%, 100% { margin-top: 0; }
-  50% { margin-top: -5px; }
+  0%, 100% { transform: translate3d(
+      calc(var(--px) * (18px + (var(--depth) * 32px))),
+      calc(var(--py) * (12px + (var(--depth) * 20px))),
+      calc(-30px - (var(--depth) * 180px))
+    ) rotateX(calc(var(--py) * -10deg + 4deg)) rotateY(calc(var(--px) * 12deg)) rotateZ(var(--rz, 0deg)) scale(var(--depth-scale)); }
+  50% { transform: translate3d(
+      calc(var(--px) * (18px + (var(--depth) * 32px))),
+      calc((var(--py) * (12px + (var(--depth) * 20px))) - 6px),
+      calc(-30px - (var(--depth) * 180px))
+    ) rotateX(calc(var(--py) * -10deg + 2deg)) rotateY(calc(var(--px) * 12deg)) rotateZ(var(--rz, 0deg)) scale(var(--depth-scale)); }
 }
 
 .studio-prop[data-depth="0.88"] { --depth: 0.88; }
@@ -1386,7 +1637,4 @@ select.form-input option {
     transition: none !important;
   }
 
-  .studio-prop {
-    margin-top: 0 !important;
-  }
 }
