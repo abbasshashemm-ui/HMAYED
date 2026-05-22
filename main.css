@@ -1136,20 +1136,19 @@ select.form-input option {
 }
 
 .reveal-item {
-  opacity: 0;
-  transform: translateY(8px);
+  opacity: 1;
+  transform: none;
 }
 
 .reveal-item.in {
   opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transform: none;
 }
 
 .scroll-reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
 
 .scroll-reveal.is-visible {
@@ -1253,6 +1252,14 @@ body.no-spline-motion .spline-bg--full,
 body.page-home .links-section {
   min-height: 0;
   isolation: auto;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
+}
+
+.content-section,
+.booking-form {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
 }
 
 @media (max-width: 680px) {

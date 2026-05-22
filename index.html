@@ -20,15 +20,14 @@
   <meta name="twitter:description" content="Cinema-trained director and content strategist. High-end commercial production and brand visual authority.">
   <meta name="twitter:image" content="https://hmayed.online/hero-poster.jpg">
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link rel="preconnect" href="https://prod.spline.design" crossorigin>
+  <link rel="preload" href="main.css" as="style">
   <link rel="preload" href="hero-poster.jpg" as="image" fetchpriority="high">
   <link rel="preload" href="https://prod.spline.design/Zlh7HqFYflQ6cmCS/scene.splinecode" as="fetch" crossorigin>
-  <link rel="preload" href="main-mobile.webm" as="video" type="video/webm" media="(max-width: 768px)">
-  <link rel="preload" href="main.webm" as="video" type="video/webm" media="(min-width: 769px)">
   <link rel="stylesheet" href="main.css">
-  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap"></noscript>
   <script type="module" src="spline-loader.js"></script>
 </head>
 <body class="page-home has-spline">
@@ -43,7 +42,7 @@
   <main class="main">
     <div class="video-wrapper">
       <div class="video-block">
-        <video class="hero-video" playsinline muted autoplay loop preload="none" poster="hero-poster.jpg"></video>
+        <video class="hero-video" playsinline autoplay loop preload="none" poster="hero-poster.jpg"></video>
         <button class="unmute-btn" id="unmuteBtn" type="button">
           <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4.5 7 8.5v7l5 4V4.5Zm1 2.4 2.8 2.2H18v3.8h-2.2L13 15.1V6.9ZM5 9.5H7v5H5v-5Z"/></svg>
           <span>Sound</span>

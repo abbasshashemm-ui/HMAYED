@@ -36,7 +36,7 @@ function Encode-HeroWebm {
   )
 
   $temp = if ($InputPath -eq $OutputPath) { "$OutputPath.tmp" } else { $OutputPath }
-  & ffmpeg -y -i $InputPath -c:v libvpx-vp9 -crf $Crf -b:v 0 -vf "scale=-2:$Height" -an -f webm $temp
+  & ffmpeg -y -i $InputPath -c:v libvpx-vp9 -crf $Crf -b:v 0 -vf "scale=-2:$Height" -c:a libopus -b:a 96k -f webm $temp
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
   if ($temp -ne $OutputPath) {
     Move-Item -LiteralPath $temp -Destination $OutputPath -Force
