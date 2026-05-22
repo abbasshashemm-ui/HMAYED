@@ -111,34 +111,4 @@ foreach ($file in $files) {
   Write-Output ("{0} -> {1} ({2:n0} -> {3:n0} bytes)" -f $result.Name, [IO.Path]::GetFileName($result.Path), $result.Before, $result.After)
 }
 
-if (Test-Path -LiteralPath 'camera-wireframe.png') {
-  $posterFile = Get-Item -LiteralPath 'camera-wireframe.png'
-  $posterOut = Join-Path $posterFile.DirectoryName 'hero-poster.jpg'
-  if (-not (Test-Path -LiteralPath $posterOut) -or
-      (Get-Item -LiteralPath $posterOut).LastWriteTimeUtc -lt $posterFile.LastWriteTimeUtc) {
-    $stream = [System.IO.File]::Open($posterFile.FullName, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read)
-    $src = [System.Drawing.Image]::FromStream($stream)
-    $stream.Dispose()
-    try {
-      $maxW = 1280
-      $scale = if ($src.Width -le $maxW) { 1.0 } else { $maxW / [double]$src.Width }
-      $newW = [int][Math]::Max(1, [Math]::Round($src.Width * $scale))
-      $newH = [int][Math]::Max(1, [Math]::Round($src.Height * $scale))
-      $bmp = New-Object System.Drawing.Bitmap($newW, $newH)
-      $gfx = [System.Drawing.Graphics]::FromImage($bmp)
-      $gfx.Clear([System.Drawing.Color]::FromArgb(3, 4, 5))
-      $gfx.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
-      $gfx.DrawImage($src, 0, 0, $newW, $newH)
-      $gfx.Dispose()
-      Save-Jpeg -Image $bmp -Path $posterOut -Q 90
-      $bmp.Dispose()
-      Write-Output ("hero-poster.jpg ({0:n0} bytes)" -f (Get-Item -LiteralPath $posterOut).Length)
-    } finally {
-      $src.Dispose()
-    }
-  } else {
-    Write-Output 'hero-poster.jpg is up to date'
-  }
-}
-
 Write-Output ("Done. {0} display asset(s). Carousel total: {1:n0} -> {2:n0} bytes" -f $count, $totalBefore, $totalAfter)

@@ -19,12 +19,6 @@ function trackEvent(eventName, data = {}) {
   if (window.plausible) window.plausible(eventName, { props: data });
 }
 
-function prefersLightMedia() {
-  const c = navigator.connection;
-  if (!c) return false;
-  return !!(c.saveData || /(^|-)2g/.test(c.effectiveType || ''));
-}
-
 function carouselSizesFor(key) {
   if (key === 'podcast') return '(max-width: 680px) 94vw, 702px';
   return '(max-width: 680px) 85vw, 520px';
@@ -43,9 +37,14 @@ function setSubmitIcon(el, type) {
 
 function revealItems(selector, delayStep) {
   const nodes = document.querySelectorAll(selector);
+  const instant = prefersReducedMotion();
   nodes.forEach((item, index) => {
     item.classList.add('reveal-item');
-    setTimeout(() => {
+    if (instant) {
+      item.classList.add('in');
+      return;
+    }
+    window.setTimeout(() => {
       item.classList.add('in');
     }, 70 + (index * delayStep));
   });
@@ -108,11 +107,9 @@ function primeCarouselWindow(root, imageUrls, current, keepRange, sizes) {
 
 const CAROUSEL_IMAGES = {
   'talking-head': [
-    'content/content-creation/talking-head/th1.webp',
-    'content/content-creation/talking-head/th2.webp',
-    'content/content-creation/talking-head/th3.webp',
-    'content/content-creation/talking-head/th4.webp',
-    'content/content-creation/talking-head/th5.webp'
+    'content/content-creation/talking-head/CC1.webp',
+    'content/content-creation/talking-head/CC2.webp',
+    'content/content-creation/talking-head/CC3.webp'
   ],
   podcast: [
     'content/content-creation/podcast/podcast1.jpg',
@@ -129,7 +126,6 @@ const CAROUSEL_IMAGES = {
   ],
   cinema: [
     'content/cinema/cinema1.webp',
-    'content/cinema/cinema2.webp',
     'content/cinema/cinema3.webp',
     'content/cinema/cinema4.webp',
     'content/cinema/cinema5.webp',
@@ -177,17 +173,49 @@ function initResponsiveCarousel(root, imageUrls, trackingSession) {
   let current = 0;
   const dots = Array.from(dotsWrap.querySelectorAll('.carousel-dot'));
   const mobileQuery = window.matchMedia('(max-width: 900px)');
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const LOAD_RANGE = 1;
 
   function applyMode() {
     root.classList.toggle('is-mobile', mobileQuery.matches);
     root.classList.toggle('is-desktop', !mobileQuery.matches);
+    root.classList.toggle('is-reduced-motion', reducedMotionQuery.matches);
   }
 
   function render() {
     const allSlides = track.querySelectorAll('.carousel-slide');
     const total = slides.length;
+
+    if (!mobileQuery.matches) {
+      allSlides.forEach((slide, idx) => {
+        slide.hidden = false;
+        slide.style.removeProperty('--offset');
+        slide.style.removeProperty('--abs-offset');
+        slide.style.removeProperty('z-index');
+        slide.classList.add('is-active');
+        loadSlideImage(slide, slides[idx], idx === 0 ? 'high' : 'auto', imageSizes);
+      });
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('is-active', idx === 0);
+      });
+      progress.textContent = `${slides.length} photos`;
+      return;
+    }
+
+    const flat = true;
+
     allSlides.forEach((slide, idx) => {
+      if (flat) {
+        const active = idx === current;
+        slide.hidden = !active;
+        slide.style.setProperty('--offset', '0');
+        slide.style.setProperty('--abs-offset', active ? '0' : '1');
+        slide.classList.toggle('is-active', active);
+        slide.style.zIndex = active ? 2 : 1;
+        return;
+      }
+
+      slide.hidden = false;
       let offset = idx - current;
       if (total > 2) {
         const half = Math.floor(total / 2);
@@ -256,9 +284,27 @@ function initResponsiveCarousel(root, imageUrls, trackingSession) {
   }, { passive: true });
 
   if (typeof mobileQuery.addEventListener === 'function') {
-    mobileQuery.addEventListener('change', applyMode);
+    mobileQuery.addEventListener('change', () => {
+      applyMode();
+      render();
+    });
   } else if (typeof mobileQuery.addListener === 'function') {
-    mobileQuery.addListener(applyMode);
+    mobileQuery.addListener(() => {
+      applyMode();
+      render();
+    });
+  }
+
+  if (typeof reducedMotionQuery.addEventListener === 'function') {
+    reducedMotionQuery.addEventListener('change', () => {
+      applyMode();
+      render();
+    });
+  } else if (typeof reducedMotionQuery.addListener === 'function') {
+    reducedMotionQuery.addListener(() => {
+      applyMode();
+      render();
+    });
   }
 
   applyMode();
@@ -286,6 +332,87 @@ function currentPageName() {
   return (window.location.pathname.split('/').pop() || '').toLowerCase();
 }
 
+function prefersSaveData() {
+  const c = navigator.connection;
+  return !!(c && (c.saveData || /(^|-)2g/.test(c.effectiveType || '')));
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+const MOBILE_LAYOUT_QUERY = window.matchMedia('(max-width: 768px)');
+
+function isMobileLayout() {
+  return MOBILE_LAYOUT_QUERY.matches;
+}
+
+function shouldSkipSpline() {
+  return prefersReducedMotion();
+}
+
+function heroVideoSrc() {
+  if (isMobileLayout() || prefersSaveData()) return 'main-mobile.webm';
+  return 'main.webm';
+}
+
+function whenPageRevealed(callback, fallbackMs = 5200) {
+  if (document.body.classList.contains('loaded')) {
+    window.setTimeout(callback, 400);
+    return;
+  }
+  let done = false;
+  const run = () => {
+    if (done) return;
+    done = true;
+    window.setTimeout(callback, 400);
+  };
+  document.addEventListener('spline-ready', run, { once: true });
+  window.setTimeout(run, fallbackMs);
+}
+
+function initSplineScene() {
+  const wrap = document.querySelector('.spline-bg');
+  const viewer = document.querySelector('spline-viewer');
+
+  const finishReveal = () => {
+    wrap?.classList.add('is-ready');
+    document.body.classList.add('loaded');
+    document.dispatchEvent(new CustomEvent('spline-ready'));
+  };
+
+  if (!wrap) {
+    document.body.classList.add('loaded');
+    document.dispatchEvent(new CustomEvent('spline-ready'));
+    return;
+  }
+
+  if (shouldSkipSpline()) {
+    wrap.classList.add('is-reduced-motion-hidden');
+    document.body.classList.add('no-spline-motion');
+    viewer?.remove();
+    finishReveal();
+    return;
+  }
+
+  let done = false;
+  const reveal = () => {
+    if (done) return;
+    done = true;
+    finishReveal();
+  };
+
+  if (!viewer) {
+    reveal();
+    return;
+  }
+
+  viewer.addEventListener('load-complete', reveal, { once: true });
+  viewer.addEventListener('load', reveal, { once: true });
+  window.setTimeout(reveal, 5000);
+  customElements.whenDefined('spline-viewer').catch(reveal);
+}
+
 function initHomePage() {
   const video = document.querySelector('.hero-video');
   const unmuteBtn = document.getElementById('unmuteBtn');
@@ -294,16 +421,15 @@ function initHomePage() {
 
   trackEvent('page_view', { page_type: 'home' });
 
-  const sources = Array.from(video.querySelectorAll('source'));
   const videoBlock = video.closest('.video-block');
-  const lightMedia = prefersLightMedia();
 
   const attachHeroVideo = () => {
     if (video.dataset.mediaLoaded === '1') return;
     video.dataset.mediaLoaded = '1';
-    sources.forEach((el) => {
-      if (el.dataset.src) el.src = el.dataset.src;
-    });
+    const source = document.createElement('source');
+    source.src = heroVideoSrc();
+    source.type = 'video/webm';
+    video.appendChild(source);
     video.load();
     video.play().catch(() => {});
 
@@ -318,17 +444,20 @@ function initHomePage() {
   };
 
   const scheduleHeroVideo = () => {
-    if (lightMedia) {
+    if (prefersSaveData()) {
       const loadOnIntent = () => attachHeroVideo();
       unmuteBtn.addEventListener('click', loadOnIntent, { once: true });
       video.addEventListener('click', loadOnIntent, { once: true });
       return;
     }
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(attachHeroVideo, { timeout: 1800 });
-    } else {
-      setTimeout(attachHeroVideo, 450);
-    }
+    const start = () => {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(attachHeroVideo, { timeout: 800 });
+      } else {
+        window.setTimeout(attachHeroVideo, 200);
+      }
+    };
+    whenPageRevealed(start);
   };
 
   if (videoBlock && 'IntersectionObserver' in window) {
@@ -336,87 +465,11 @@ function initHomePage() {
       if (!entries[0].isIntersecting) return;
       videoObserver.disconnect();
       scheduleHeroVideo();
-    }, { rootMargin: '60px', threshold: 0.12 });
+    }, { rootMargin: '80px', threshold: 0.08 });
     videoObserver.observe(videoBlock);
   } else {
     scheduleHeroVideo();
   }
-
-  (function initEnvironment() {
-    const root = document.documentElement;
-    let targetX = 0.5;
-    let targetY = 0.35;
-    let targetE = 0.25;
-    let x = targetX;
-    let y = targetY;
-    let e = targetE;
-    let vx = 0, vy = 0, ve = 0;
-    let scroll = 0;
-    let rafId = 0;
-
-    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-    function setTargetsFromPointer(clientX, clientY) {
-      const w = Math.max(1, window.innerWidth);
-      const h = Math.max(1, window.innerHeight);
-      targetX = clamp(clientX / w, 0, 1);
-      targetY = clamp(clientY / h, 0, 1);
-      const dx = (targetX - 0.5);
-      const dy = (targetY - 0.35);
-      targetE = clamp(0.28 + Math.sqrt(dx * dx + dy * dy) * 0.85, 0.2, 1);
-    }
-
-    window.addEventListener('pointermove', (ev) => {
-      setTargetsFromPointer(ev.clientX, ev.clientY);
-    }, { passive: true });
-
-    window.addEventListener('scroll', () => {
-      const doc = document.documentElement;
-      const max = Math.max(1, doc.scrollHeight - doc.clientHeight);
-      scroll = clamp(window.scrollY / max, 0, 1);
-    }, { passive: true });
-
-    let lastPaint = 0;
-    function tick(now) {
-      if (document.hidden) {
-        rafId = requestAnimationFrame(tick);
-        return;
-      }
-
-      if (now - lastPaint < (1000 / 30)) {
-        rafId = requestAnimationFrame(tick);
-        return;
-      }
-      lastPaint = now;
-
-      const dt = 1 / 60;
-      const k = 22;
-      const d = 8.2;
-
-      const ax = (targetX - x) * k - vx * d;
-      const ay = (targetY - y) * k - vy * d;
-      vx += ax * dt;
-      vy += ay * dt;
-      x += vx * dt;
-      y += vy * dt;
-
-      const ke = 18;
-      const de = 7.2;
-      const ae = (targetE - e) * ke - ve * de;
-      ve += ae * dt;
-      e += ve * dt;
-
-      root.style.setProperty('--env-x', x.toFixed(4));
-      root.style.setProperty('--env-y', y.toFixed(4));
-      root.style.setProperty('--env-e', e.toFixed(4));
-      root.style.setProperty('--scroll', scroll.toFixed(4));
-
-      rafId = requestAnimationFrame(tick);
-    }
-
-    rafId = requestAnimationFrame(tick);
-    window.addEventListener('pagehide', () => cancelAnimationFrame(rafId), { once: true });
-  })();
 
   let isUnmuted = false;
   let lastTime = 0;
@@ -426,6 +479,7 @@ function initHomePage() {
   unmuteBtn.style.display = 'flex';
 
   function unmuteVideo() {
+    attachHeroVideo();
     video.muted = false;
     isUnmuted = true;
     unmuteBtn.style.display = 'none';
@@ -461,6 +515,7 @@ function initHomePage() {
 
   replayBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    attachHeroVideo();
     video.currentTime = 0;
     muteVideoOnLoop();
     replayBtn.classList.remove('visible');
@@ -506,21 +561,6 @@ function initHomePage() {
   };
   video.addEventListener('loadeddata', markVideoReady, { once: true });
   video.addEventListener('playing', markVideoReady, { once: true });
-
-  const artLines = document.querySelector('.art-lines');
-  let parallaxScheduled = false;
-  function runParallax() {
-    if (!artLines) return;
-    const y = Math.max(-4, Math.min(4, window.scrollY * 0.03));
-    artLines.style.transform = `translateY(${y}px)`;
-    parallaxScheduled = false;
-  }
-  window.addEventListener('scroll', () => {
-    if (!parallaxScheduled) {
-      parallaxScheduled = true;
-      requestAnimationFrame(runParallax);
-    }
-  }, { passive: true });
 
   document.querySelectorAll('.social-link').forEach((link) => {
     let holdTimer;
@@ -754,7 +794,7 @@ function initBookingPage(config) {
 function initAboutPage() {
   if (currentPageName() !== 'about') return;
   trackEvent('page_view', { page_type: 'about' });
-  revealItems('.top-bar, .about-section, .footnote', 100);
+  revealItems('.top-bar, .about-portrait, .about-section, .footnote', 100);
 }
 
 function initThankYouPage() {
@@ -815,6 +855,7 @@ function initFloatingWhatsApp() {
 }
 
 function initScrollReveal() {
+  const instant = prefersReducedMotion();
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -822,34 +863,44 @@ function initScrollReveal() {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.form-group, .book-header, .section-divider').forEach(el => {
     el.classList.add('scroll-reveal');
+    if (instant) {
+      el.classList.add('is-visible');
+      return;
+    }
     observer.observe(el);
   });
 }
 
 (function bootstrap() {
+  initSplineScene();
   initFloatingWhatsApp();
-  initHomePage();
-  initBookingPage({
-    pageFile: 'content-creation',
-    sessionName: 'Content Session',
-    leadFieldKey: 'business_type',
-    carouselKey: 'content'
-  });
-  initBookingPage({
-    pageFile: 'cinema',
-    sessionName: 'Cinema Session',
-    leadFieldKey: 'project_type',
-    carouselKey: 'cinema'
-  });
-  initAboutPage();
-  initThankYouPage();
-  initScrollReveal();
 
-  document.body.classList.add('loaded');
+  const page = currentPageName();
+  const isHome = !page || page === 'index.html';
+
+  if (isHome) initHomePage();
+  else if (page === 'content-creation') {
+    initBookingPage({
+      pageFile: 'content-creation',
+      sessionName: 'Content Session',
+      leadFieldKey: 'business_type',
+      carouselKey: 'content'
+    });
+  } else if (page === 'cinema') {
+    initBookingPage({
+      pageFile: 'cinema',
+      sessionName: 'Cinema Session',
+      leadFieldKey: 'project_type',
+      carouselKey: 'cinema'
+    });
+  } else if (page === 'about') initAboutPage();
+  else initThankYouPage();
+
+  initScrollReveal();
 
   document.addEventListener('pointerenter', (e) => {
     const link = e.target.closest('a[href]');
@@ -863,24 +914,4 @@ function initScrollReveal() {
     hint.href = href;
     document.head.appendChild(hint);
   }, true);
-
-  document.addEventListener('click', function(e) {
-    const link = e.target.closest('a');
-    if (
-      link && 
-      link.hostname === window.location.hostname && 
-      link.getAttribute('target') !== '_blank' && 
-      !link.href.includes('#') && 
-      !link.href.startsWith('mailto:') && 
-      !link.href.startsWith('tel:')
-    ) {
-      e.preventDefault();
-      const href = link.getAttribute('href');
-      document.body.classList.remove('loaded');
-      document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = href;
-      }, 400);
-    }
-  });
 })();
