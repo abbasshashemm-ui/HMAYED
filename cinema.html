@@ -7,14 +7,31 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>HMAYED &middot; Cinema</title>
+  <meta name="description" content="Brand films, commercials, music videos, and cinematic storytelling. Book your cinema session with HMAYED.">
+  <link rel="canonical" href="https://hmayed.online/cinema">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="HMAYED">
+  <meta property="og:title" content="HMAYED &middot; Cinema">
+  <meta property="og:description" content="Brand films, commercials, music videos, and cinematic storytelling. Book your cinema session with HMAYED.">
+  <meta property="og:url" content="https://hmayed.online/cinema">
+  <meta property="og:image" content="https://hmayed.online/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HMAYED &middot; Cinema">
+  <meta name="twitter:description" content="Brand films, commercials, music videos, and cinematic storytelling. Book your cinema session with HMAYED.">
+  <meta name="twitter:image" content="https://hmayed.online/hero-poster.jpg">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://prod.spline.design" crossorigin>
+  <link rel="preload" href="https://prod.spline.design/Zlh7HqFYflQ6cmCS/scene.splinecode" as="fetch" crossorigin>
   <link rel="stylesheet" href="main.css">
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
 </head>
-<body>
+<body class="has-spline">
+  <div class="spline-bg spline-bg--full" aria-hidden="true">
+    <spline-viewer url="https://prod.spline.design/Zlh7HqFYflQ6cmCS/scene.splinecode"></spline-viewer>
+  </div>
   <header class="top-bar">
     <a href="/" class="back-btn" aria-label="Back to home">
       <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15 4 7.4 12 15 20l-1.4 1.4-7.6-7.6 7.6-7.6L15 4z"/></svg>
@@ -25,12 +42,6 @@
   <main class="main">
   <div class="section-divider" aria-hidden="true"><span>Cinema</span></div>
   <div class="video-wrapper">
-    <div class="art-lines" aria-hidden="true">
-      <div class="art-line curve-1"></div>
-      <div class="art-line curve-2"></div>
-      <div class="art-line curve-3"></div>
-      <div class="art-line curve-4"></div>
-    </div>
     <div class="video-block">
       <div class="media-carousel" data-carousel-key="cinema" aria-label="Cinema portfolio carousel">
         <button class="carousel-nav carousel-prev" type="button" aria-label="Previous photo">
@@ -98,7 +109,7 @@
     </div>
     <div class="footnote">- CINEMATIC STORYTELLING -</div>
   </div>
-  <div class="powered-by">Powered by Quantex</div>
+  <div class="powered-by">Powered by Quantex AI Solutions</div>
 </main>
 <script src="main.js" defer></script>
 </body>

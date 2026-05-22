@@ -1,72 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f4f7fc">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>HMAYED &middot; Cinema</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://prod.spline.design" crossorigin>
-  <link rel="preload" href="hero-poster.jpg" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="main.css">
-  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
-</head>
-<body>
-  <div class="env-ambient" aria-hidden="true"></div>
-  <div class="env-vignette" aria-hidden="true"></div>
-
-  <header class="top-bar top-bar-home">
-    <a href="/" class="logo">HMAYED</a>
-  </header>
-
-  <main class="main">
-    <div class="video-wrapper">
-      <div class="art-lines" aria-hidden="true">
-        <div class="art-line curve-1"></div>
-        <div class="art-line curve-2"></div>
-        <div class="art-line curve-3"></div>
-        <div class="art-line curve-4"></div>
-        <div class="art-line curve-5"></div>
-      </div>
-
-      <div class="video-block">
-        <video class="hero-video" playsinline muted autoplay loop preload="none" poster="hero-poster.jpg">
-          <source data-src="main.webm" type="video/webm">
-          <source data-src="main.mp4" type="video/mp4">
-        </video>
-        <button class="unmute-btn" id="unmuteBtn" type="button">
-          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4.5 7 8.5v7l5 4V4.5Zm1 2.4 2.8 2.2H18v3.8h-2.2L13 15.1V6.9ZM5 9.5H7v5H5v-5Z"/></svg>
-          <span>Sound</span>
-        </button>
-        <button class="replay-btn" id="replayBtn" type="button" aria-label="Replay video">
-          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 5a7 7 0 1 1-4.95 11.95l1.06-1.06A5.5 5.5 0 1 0 12 6.5V9l4-3.5-4-3.5v2.5Z"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="section-divider" aria-hidden="true"><span>Explore</span></div>
-
-    <div class="links-section">
-      <div class="spline-bg" aria-hidden="true">
-        <spline-viewer url="https://prod.spline.design/Zlh7HqFYflQ6cmCS/scene.splinecode"></spline-viewer>
-      </div>
-      <div class="links-foreground">
-        <div id="refractiveControlsRoot"></div>
-        <div class="footnote">- CINEMA -</div>
-      </div>
-    </div>
-
-    <div class="powered-by">Powered by Quantex AI Solutions</div>
-  </main>
-
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
-  <script defer src="refractive-controls.js"></script>
-  <script defer src="main.js"></script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f7fc">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>HMAYED</title>
+  <meta name="description" content="Cinema-trained director and content strategist. High-end commercial production and brand visual authority.">
+  <link rel="canonical" href="https://hmayed.online/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="HMAYED">
+  <meta property="og:title" content="HMAYED">
+  <meta property="og:description" content="Cinema-trained director and content strategist. High-end commercial production and brand visual authority.">
+  <meta property="og:url" content="https://hmayed.online/">
+  <meta property="og:image" content="https://hmayed.online/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HMAYED">
+  <meta name="twitter:description" content="Cinema-trained director and content strategist. High-end commercial production and brand visual authority.">
+  <meta name="twitter:image" content="https://hmayed.online/hero-poster.jpg">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://prod.spline.design" crossorigin>
+  <link rel="preload" href="hero-poster.jpg" as="image" fetchpriority="high">
+  <link rel="preload" href="https://prod.spline.design/Zlh7HqFYflQ6cmCS/scene.splinecode" as="fetch" crossorigin>
+  <link rel="stylesheet" href="main.css">
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
+</head>
+<body class="page-home has-spline">
+  <div class="spline-bg spline-bg--full" aria-hidden="true">
+    <spline-viewer url="https://prod.spline.design/Zlh7HqFYflQ6cmCS/scene.splinecode"></spline-viewer>
+  </div>
+
+  <header class="top-bar top-bar-home">
+    <a href="/" class="logo">HMAYED</a>
+  </header>
+
+  <main class="main">
+    <div class="video-wrapper">
+      <div class="video-block">
+        <video class="hero-video" playsinline muted autoplay loop preload="none" poster="hero-poster.jpg">
+          <source data-src="main.webm" type="video/webm">
+        </video>
+        <button class="unmute-btn" id="unmuteBtn" type="button">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4.5 7 8.5v7l5 4V4.5Zm1 2.4 2.8 2.2H18v3.8h-2.2L13 15.1V6.9ZM5 9.5H7v5H5v-5Z"/></svg>
+          <span>Sound</span>
+        </button>
+        <button class="replay-btn" id="replayBtn" type="button" aria-label="Replay video">
+          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 5a7 7 0 1 1-4.95 11.95l1.06-1.06A5.5 5.5 0 1 0 12 6.5V9l4-3.5-4-3.5v2.5Z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="section-divider" aria-hidden="true"><span>Explore</span></div>
+
+    <div class="links-section">
+      <div class="links-foreground">
+        <div id="refractiveControlsRoot"></div>
+        <div class="footnote">- CINEMA -</div>
+      </div>
+    </div>
+
+    <div class="powered-by">Powered by Quantex AI Solutions</div>
+  </main>
+
+  <script defer src="refractive-controls.js"></script>
+  <script defer src="main.js"></script>
+</body>
+</html>

@@ -2,10 +2,6 @@
   const rootNode = document.getElementById('refractiveControlsRoot');
   if (!rootNode) return;
 
-  function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-  }
-
   function brandLogo(type) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('class', 'social-logo social-logo-' + type);
@@ -46,13 +42,21 @@
     return svg;
   }
 
-  const buttons = [];
-  const start = performance.now();
-  let rafId = 0;
-  let lastPaint = 0;
-
   function setPressed(element, pressed) {
     element.style.setProperty('--press', pressed ? '1' : '0');
+  }
+
+  function setHighlight(link, x, y) {
+    const energy = Math.max(0.12, 1 - (Math.hypot(x - 50, y - 50) / 66));
+    link.style.setProperty('--ax', x.toFixed(2) + '%');
+    link.style.setProperty('--ay', y.toFixed(2) + '%');
+    link.style.setProperty('--flow', energy.toFixed(3));
+  }
+
+  function resetHighlight(link) {
+    link.style.setProperty('--ax', '50%');
+    link.style.setProperty('--ay', '50%');
+    link.style.setProperty('--flow', '0.2');
   }
 
   function createButton(config) {
@@ -75,90 +79,28 @@
     const text = document.createElement('span');
     text.textContent = config.label;
     link.appendChild(text);
-
-    const state = {
-      el: link,
-      pressed: false,
-      target: { x: 50, y: 50, energy: 0.16 },
-      anim: { x: 50, y: 50, e: 0.2, vx: 0, vy: 0, ve: 0 }
-    };
+    resetHighlight(link);
 
     link.addEventListener('pointermove', (event) => {
       const rect = link.getBoundingClientRect();
       const x = ((event.clientX - rect.left) / rect.width) * 100;
       const y = ((event.clientY - rect.top) / rect.height) * 100;
-      state.target = { x, y, energy: Math.max(0, 1 - (Math.hypot(x - 50, y - 50) / 66)) };
+      setHighlight(link, x, y);
     });
 
     link.addEventListener('pointerleave', () => {
-      state.pressed = false;
-      state.target.energy = 0.16;
+      resetHighlight(link);
       setPressed(link, false);
     });
 
-    link.addEventListener('pointerdown', () => {
-      state.pressed = true;
-      setPressed(link, true);
-    });
-
-    link.addEventListener('pointerup', () => {
-      state.pressed = false;
-      setPressed(link, false);
-    });
-
+    link.addEventListener('pointerdown', () => setPressed(link, true));
+    link.addEventListener('pointerup', () => setPressed(link, false));
     link.addEventListener('blur', () => {
-      state.pressed = false;
-      state.target.energy = 0.16;
+      resetHighlight(link);
       setPressed(link, false);
     });
 
-    buttons.push(state);
     return link;
-  }
-
-  function tick(now) {
-    if (document.hidden) {
-      rafId = requestAnimationFrame(tick);
-      return;
-    }
-
-    if (now - lastPaint < (1000 / 30)) {
-      rafId = requestAnimationFrame(tick);
-      return;
-    }
-    lastPaint = now;
-
-    const elapsed = (now - start) * 0.001;
-    const dt = 1 / 60;
-
-    buttons.forEach((state) => {
-      const idleX = 50 + (Math.sin(elapsed * 1.35) * 11) + (Math.cos(elapsed * 0.66) * 6);
-      const idleY = 50 + (Math.cos(elapsed * 1.18) * 9) + (Math.sin(elapsed * 0.52) * 4);
-      const te = state.target.energy || 0;
-      const attract = Math.min(1, te * 1.9);
-      const desiredX = (state.target.x * attract) + (idleX * (1 - attract));
-      const desiredY = (state.target.y * attract) + (idleY * (1 - attract));
-      const desiredEnergy = Math.max(0.2, te * 1.06);
-      const a = state.anim;
-
-      const ax = (desiredX - a.x) * 36 - a.vx * 9.5;
-      const ay = (desiredY - a.y) * 36 - a.vy * 9.5;
-      a.vx += ax * dt;
-      a.vy += ay * dt;
-      a.x += a.vx * dt;
-      a.y += a.vy * dt;
-
-      const ae = (desiredEnergy - a.e) * 28 - a.ve * 8.5;
-      a.ve += ae * dt;
-      a.e += a.ve * dt;
-      a.e = clamp(a.e, 0.12, 1.4);
-
-      state.el.style.setProperty('--ax', a.x.toFixed(2) + '%');
-      state.el.style.setProperty('--ay', a.y.toFixed(2) + '%');
-      state.el.style.setProperty('--flow', a.e.toFixed(3));
-    });
-
-    rafId = requestAnimationFrame(tick);
   }
 
   const stack = document.createElement('div');
@@ -224,7 +166,4 @@
 
   stack.appendChild(socialRow);
   rootNode.appendChild(stack);
-
-  rafId = requestAnimationFrame(tick);
-  window.addEventListener('pagehide', () => cancelAnimationFrame(rafId), { once: true });
 })();

@@ -7,17 +7,31 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>HMAYED &middot; About Me</title>
+  <meta name="description" content="The story behind the lens — cinema-trained director and content strategist building visual authority for brands.">
+  <link rel="canonical" href="https://hmayed.online/about">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="HMAYED">
+  <meta property="og:title" content="HMAYED &middot; About Me">
+  <meta property="og:description" content="The story behind the lens — cinema-trained director and content strategist building visual authority for brands.">
+  <meta property="og:url" content="https://hmayed.online/about">
+  <meta property="og:image" content="https://hmayed.online/hero-poster.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HMAYED &middot; About Me">
+  <meta name="twitter:description" content="The story behind the lens — cinema-trained director and content strategist building visual authority for brands.">
+  <meta name="twitter:image" content="https://hmayed.online/hero-poster.jpg">
   <link rel="icon" type="image/png" href="favicon.png">
-
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://prod.spline.design" crossorigin>
+  <link rel="preload" href="https://prod.spline.design/Zlh7HqFYflQ6cmCS/scene.splinecode" as="fetch" crossorigin>
   <link rel="stylesheet" href="main.css">
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.94/build/spline-viewer.js"></script>
 </head>
-<body>
-  <div class="env-ambient" aria-hidden="true"></div>
-  <div class="env-vignette" aria-hidden="true"></div>
+<body class="has-spline">
+  <div class="spline-bg spline-bg--full" aria-hidden="true">
+    <spline-viewer url="https://prod.spline.design/Zlh7HqFYflQ6cmCS/scene.splinecode"></spline-viewer>
+  </div>
 
   <header class="top-bar">
     <a href="/" class="back-btn" aria-label="Back to home">
@@ -33,17 +47,27 @@
         <div class="book-subtitle">The story behind the lens</div>
       </div>
 
+      <figure class="about-portrait">
+        <img src="hmyd.webp" alt="Hmayed" width="560" height="700" decoding="async" loading="lazy">
+      </figure>
+
       <p class="about-body">I don&rsquo;t just shoot footage; I engineer visual authority.</p>
 
       <p class="about-body">As a cinema-trained Director and Content Strategist, I bridge the gap between high-end cinematic execution and aggressive brand growth. Modern business owners don&rsquo;t need high-volume, low-cost fluff&mdash;they need a precise visual framework that commands attention, builds immediate market trust, and drives revenue.</p>
 
       <p class="about-body">From directing high-production commercial sets to architecting high-impact content strategies, my focus is entirely on shifting your brand from a market option to a market leader.</p>
 
-      <p class="about-body">Stop wasting your budget on basic camera work. <a class="about-cta" href="content-creation#bookingForm">Book a consultation below</a>, and let&rsquo;s build your visual monopoly.</p>
+      <p class="about-body">Stop wasting your budget on basic camera work. Book a consultation below and let&rsquo;s build your visual monopoly.</p>
+
+      <div class="about-book-chooser">
+        <a class="about-book-btn" href="content-creation#bookingForm">Content Creation</a>
+        <a class="about-book-btn" href="cinema#bookingForm">Cinema Session</a>
+      </div>
 
       <div class="footnote">- VISUAL STORYTELLING -</div>
     </div>
-    <div class="powered-by">Powered by Quantex</div>
+
+    <div class="powered-by">Powered by Quantex AI Solutions</div>
   </main>
 
   <script src="main.js" defer></script>
