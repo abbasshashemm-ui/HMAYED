@@ -107,11 +107,9 @@ function primeCarouselWindow(root, imageUrls, current, keepRange, sizes) {
 
 const CAROUSEL_IMAGES = {
   'talking-head': [
-    'content/content-creation/talking-head/th1.webp',
-    'content/content-creation/talking-head/th2.webp',
-    'content/content-creation/talking-head/th3.webp',
-    'content/content-creation/talking-head/th4.webp',
-    'content/content-creation/talking-head/th5.webp'
+    'content/content-creation/talking-head/CC1.webp',
+    'content/content-creation/talking-head/CC2.webp',
+    'content/content-creation/talking-head/CC3.webp'
   ],
   podcast: [
     'content/content-creation/podcast/podcast1.jpg',
@@ -187,10 +185,27 @@ function initResponsiveCarousel(root, imageUrls, trackingSession) {
   function render() {
     const allSlides = track.querySelectorAll('.carousel-slide');
     const total = slides.length;
-    const reduced = reducedMotionQuery.matches;
+
+    if (!mobileQuery.matches) {
+      allSlides.forEach((slide, idx) => {
+        slide.hidden = false;
+        slide.style.removeProperty('--offset');
+        slide.style.removeProperty('--abs-offset');
+        slide.style.removeProperty('z-index');
+        slide.classList.add('is-active');
+        loadSlideImage(slide, slides[idx], idx === 0 ? 'high' : 'auto', imageSizes);
+      });
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('is-active', idx === 0);
+      });
+      progress.textContent = `${slides.length} photos`;
+      return;
+    }
+
+    const flat = true;
 
     allSlides.forEach((slide, idx) => {
-      if (reduced) {
+      if (flat) {
         const active = idx === current;
         slide.hidden = !active;
         slide.style.setProperty('--offset', '0');
@@ -269,9 +284,15 @@ function initResponsiveCarousel(root, imageUrls, trackingSession) {
   }, { passive: true });
 
   if (typeof mobileQuery.addEventListener === 'function') {
-    mobileQuery.addEventListener('change', applyMode);
+    mobileQuery.addEventListener('change', () => {
+      applyMode();
+      render();
+    });
   } else if (typeof mobileQuery.addListener === 'function') {
-    mobileQuery.addListener(applyMode);
+    mobileQuery.addListener(() => {
+      applyMode();
+      render();
+    });
   }
 
   if (typeof reducedMotionQuery.addEventListener === 'function') {
@@ -320,6 +341,21 @@ function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+const MOBILE_LAYOUT_QUERY = window.matchMedia('(max-width: 768px)');
+
+function isMobileLayout() {
+  return MOBILE_LAYOUT_QUERY.matches;
+}
+
+function shouldSkipSpline() {
+  return prefersReducedMotion();
+}
+
+function heroVideoSrc() {
+  if (isMobileLayout() || prefersSaveData()) return 'main-mobile.webm';
+  return 'main.webm';
+}
+
 function whenPageRevealed(callback, fallbackMs = 5200) {
   if (document.body.classList.contains('loaded')) {
     window.setTimeout(callback, 400);
@@ -351,7 +387,7 @@ function initSplineScene() {
     return;
   }
 
-  if (prefersReducedMotion()) {
+  if (shouldSkipSpline()) {
     wrap.classList.add('is-reduced-motion-hidden');
     document.body.classList.add('no-spline-motion');
     viewer?.remove();
@@ -385,15 +421,15 @@ function initHomePage() {
 
   trackEvent('page_view', { page_type: 'home' });
 
-  const sources = Array.from(video.querySelectorAll('source'));
   const videoBlock = video.closest('.video-block');
 
   const attachHeroVideo = () => {
     if (video.dataset.mediaLoaded === '1') return;
     video.dataset.mediaLoaded = '1';
-    sources.forEach((el) => {
-      if (el.dataset.src) el.src = el.dataset.src;
-    });
+    const source = document.createElement('source');
+    source.src = heroVideoSrc();
+    source.type = 'video/webm';
+    video.appendChild(source);
     video.load();
     video.play().catch(() => {});
 
