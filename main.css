@@ -284,6 +284,31 @@ body::after {
   z-index: 2;
 }
 
+.video-block:has(.media-carousel) {
+  width: min(94vw, calc(var(--max-card) * 0.65)) !important;
+  max-width: calc(var(--max-card) * 0.65) !important;
+  aspect-ratio: 16 / 9 !important;
+}
+
+.video-block:has(.media-carousel[data-carousel-key="podcast"]) {
+  width: min(94vw, calc(var(--max-card) * 0.78)) !important;
+  max-width: calc(var(--max-card) * 0.78) !important;
+  aspect-ratio: 16 / 9 !important;
+}
+
+.video-block:has(.media-carousel[data-carousel-key="talking-head"]),
+.video-block:has(.media-carousel[data-carousel-key="food"]) {
+  width: min(85vw, 520px) !important;
+  max-width: 520px !important;
+  aspect-ratio: 3072 / 3840 !important;
+}
+
+.video-block:has(.media-carousel[data-carousel-key="cinema"]) {
+  width: min(85vw, 520px) !important;
+  max-width: 520px !important;
+  aspect-ratio: 4 / 5 !important;
+}
+
 @media (max-width: 900px) {
   .video-block:has(.media-carousel) {
     width: min(94vw, calc(var(--max-card) * 0.65)) !important;
@@ -308,26 +333,6 @@ body::after {
     width: min(85vw, 520px) !important;
     max-width: 520px !important;
     aspect-ratio: 4 / 5 !important;
-  }
-}
-
-@media (max-width: 900px) {
-  .video-block:has(.media-carousel[data-carousel-key="talking-head"]) .carousel-slide,
-  .video-block:has(.media-carousel[data-carousel-key="food"]) .carousel-slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .video-block:has(.media-carousel[data-carousel-key="talking-head"]) .carousel-slide img,
-  .video-block:has(.media-carousel[data-carousel-key="food"]) .carousel-slide img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    aspect-ratio: 3072 / 3840;
-    object-fit: contain;
-    object-position: center;
   }
 }
 
@@ -924,13 +929,13 @@ select.form-input option {
 .carousel-slide {
   position: absolute;
   top: 0;
-  left: 15%;
-  width: 70%;
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: #e8edf4;
+  background: transparent;
   overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px var(--shadow);
+  border-radius: inherit;
+  box-shadow: none;
 
   --offset: 0;
   --abs-offset: 0;
@@ -962,6 +967,7 @@ select.form-input option {
   height: 100%;
   display: block;
   object-fit: cover;
+  object-position: center;
 }
 
 .carousel-nav {
@@ -988,7 +994,7 @@ select.form-input option {
   left: 50%;
   bottom: 10px;
   transform: translateX(-50%);
-  display: none;
+  display: flex;
   align-items: center;
   gap: 8px;
   border-radius: var(--radius-pill);
@@ -999,10 +1005,6 @@ select.form-input option {
 }
 
 @media (max-width: 900px) {
-  .carousel-dots {
-    display: flex;
-  }
-
   .media-carousel.is-mobile .carousel-viewport {
     perspective: none;
   }
@@ -1021,17 +1023,6 @@ select.form-input option {
     pointer-events: none;
   }
 
-  .media-carousel.is-mobile .carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  .video-block:has(.media-carousel[data-carousel-key="talking-head"]) .media-carousel.is-mobile .carousel-slide img,
-  .video-block:has(.media-carousel[data-carousel-key="food"]) .media-carousel.is-mobile .carousel-slide img {
-    object-fit: contain;
-    aspect-ratio: auto;
-  }
 }
 
 .carousel-dot {
@@ -1049,90 +1040,11 @@ select.form-input option {
 }
 
 .carousel-progress {
-  display: none;
-}
-
-@media (min-width: 901px) {
-  .video-block:has(.media-carousel),
-  .video-block:has(.media-carousel[data-carousel-key="podcast"]),
-  .video-block:has(.media-carousel[data-carousel-key="talking-head"]),
-  .video-block:has(.media-carousel[data-carousel-key="food"]),
-  .video-block:has(.media-carousel[data-carousel-key="cinema"]) {
-    width: min(94vw, var(--max-card)) !important;
-    max-width: var(--max-card) !important;
-    aspect-ratio: auto !important;
-    height: auto !important;
-    min-height: 0 !important;
-    padding: clamp(14px, 2vw, 22px);
-    overflow: visible;
-  }
-
-  .media-carousel.is-desktop {
-    height: auto;
-  }
-
-  .media-carousel.is-desktop .carousel-nav,
-  .media-carousel.is-desktop .carousel-dots {
-    display: none !important;
-  }
-
-  .media-carousel.is-desktop .carousel-viewport {
-    overflow: visible;
-    height: auto;
-    perspective: none;
-  }
-
-  .media-carousel.is-desktop .carousel-track {
-    position: static;
-    display: grid;
-    grid-template-columns: repeat(var(--gallery-cols, 3), minmax(0, 1fr));
-    gap: clamp(10px, 1.2vw, 16px);
-    align-items: start;
-    height: auto;
-    transform-style: flat;
-  }
-
-  .media-carousel.is-desktop[data-carousel-key="talking-head"] {
-    --gallery-cols: 3;
-  }
-
-  .media-carousel.is-desktop[data-carousel-key="podcast"] {
-    --gallery-cols: 2;
-  }
-
-  .media-carousel.is-desktop[data-carousel-key="food"] {
-    --gallery-cols: 4;
-  }
-
-  .media-carousel.is-desktop[data-carousel-key="cinema"] {
-    --gallery-cols: 5;
-  }
-
-  .media-carousel.is-desktop .carousel-slide {
-    position: relative;
-    left: auto;
-    top: auto;
-    width: 100%;
-    height: auto;
-    max-height: none;
-    transform: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-    pointer-events: auto;
-    transition: none;
-    will-change: auto;
-    box-shadow: 0 8px 24px var(--shadow);
-    background: transparent;
-  }
-
-  .media-carousel.is-desktop .carousel-slide img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
-    object-position: center;
-    aspect-ratio: auto;
-  }
+  margin-left: 6px;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  white-space: nowrap;
 }
 
 .reveal-item {

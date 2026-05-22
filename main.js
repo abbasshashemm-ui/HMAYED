@@ -20,8 +20,17 @@ function trackEvent(eventName, data = {}) {
 }
 
 function carouselSizesFor(key) {
-  if (key === 'podcast') return '(max-width: 680px) 94vw, 702px';
-  return '(max-width: 680px) 85vw, 520px';
+  if (key === 'podcast') return '(max-width: 680px) 78vw, 702px';
+  if (key === 'talking-head' || key === 'food' || key === 'cinema') {
+    return '(max-width: 680px) 85vw, 520px';
+  }
+  return '(max-width: 680px) 65vw, 585px';
+}
+
+function carouselImageSrc(fullSrc, isActive) {
+  if (isActive || /\.webp$/i.test(fullSrc)) return fullSrc;
+  const displaySrc = displaySrcFor(fullSrc);
+  return displaySrc;
 }
 
 const SUBMIT_ICONS = {
@@ -57,8 +66,8 @@ function displaySrcFor(fullSrc) {
 }
 
 function loadPortfolioImage(img, fullSrc, options = {}) {
-  const displaySrc = displaySrcFor(fullSrc);
-  const { priority = 'auto', sizes = '' } = options;
+  const { priority = 'auto', sizes = '', active = false } = options;
+  const src = carouselImageSrc(fullSrc, active);
 
   if (priority === 'high') img.fetchPriority = 'high';
   else if (priority === 'low') img.fetchPriority = 'low';
@@ -71,14 +80,27 @@ function loadPortfolioImage(img, fullSrc, options = {}) {
     if (img.src !== fullSrc) img.src = fullSrc;
   }, { once: true });
 
-  img.src = displaySrc === fullSrc ? fullSrc : displaySrc;
+  img.src = src;
 }
 
-function loadSlideImage(slide, fullSrc, priority, sizes) {
+function loadSlideImage(slide, fullSrc, priority, sizes, isActive) {
   const img = slide.querySelector('img');
-  if (!img || img.dataset.loaded === '1') return;
+  if (!img) return;
+
+  const nextSrc = carouselImageSrc(fullSrc, isActive);
+  const loadedSrc = img.getAttribute('src') || '';
+
+  if (img.dataset.loaded === '1' && loadedSrc === nextSrc) return;
+
+  if (img.dataset.loaded === '1' && isActive && loadedSrc !== fullSrc) {
+    img.src = fullSrc;
+    return;
+  }
+
+  if (img.dataset.loaded === '1' && !isActive) return;
+
   img.dataset.loaded = '1';
-  loadPortfolioImage(img, fullSrc, { priority, sizes });
+  loadPortfolioImage(img, fullSrc, { priority, sizes, active: isActive });
 }
 
 function unloadDistantSlides(track, current, keepRange) {
@@ -99,7 +121,8 @@ function primeCarouselWindow(root, imageUrls, current, keepRange, sizes) {
 
   for (let offset = -keepRange; offset <= keepRange; offset += 1) {
     const idx = ((current + offset) % total + total) % total;
-    loadSlideImage(slides[idx], imageUrls[idx], offset === 0 ? 'high' : 'low', sizes);
+    const isActive = offset === 0;
+    loadSlideImage(slides[idx], imageUrls[idx], isActive ? 'high' : 'low', sizes, isActive);
   }
 
   unloadDistantSlides(track, current, keepRange + 1);
@@ -132,32 +155,6 @@ const CAROUSEL_IMAGES = {
     'content/cinema/cinema6.webp'
   ]
 };
-
-function observeDesktopSlides(root, imageUrls, imageSizes) {
-  const track = root.querySelector('.carousel-track');
-  if (!track || !('IntersectionObserver' in window)) {
-    track?.querySelectorAll('.carousel-slide').forEach((slide, idx) => {
-      loadSlideImage(slide, imageUrls[idx], idx === 0 ? 'high' : 'low', imageSizes);
-    });
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const slide = entry.target;
-      const idx = Number(slide.dataset.slideIndex);
-      if (!Number.isFinite(idx)) return;
-      loadSlideImage(slide, imageUrls[idx], idx === 0 ? 'high' : 'low', imageSizes);
-      observer.unobserve(slide);
-    });
-  }, { rootMargin: '160px 0px', threshold: 0.01 });
-
-  track.querySelectorAll('.carousel-slide').forEach((slide, idx) => {
-    slide.dataset.slideIndex = String(idx);
-    observer.observe(slide);
-  });
-}
 
 function initResponsiveCarousel(root, imageUrls, trackingSession) {
   if (!root || !Array.isArray(imageUrls) || imageUrls.length === 0) return;
@@ -211,31 +208,10 @@ function initResponsiveCarousel(root, imageUrls, trackingSession) {
   function render() {
     const allSlides = track.querySelectorAll('.carousel-slide');
     const total = slides.length;
-
-    if (!mobileQuery.matches) {
-      allSlides.forEach((slide, idx) => {
-        slide.hidden = false;
-        slide.style.removeProperty('--offset');
-        slide.style.removeProperty('--abs-offset');
-        slide.style.removeProperty('z-index');
-        slide.classList.add('is-active');
-        slide.dataset.slideIndex = String(idx);
-      });
-      if (root.dataset.desktopObserved !== '1') {
-        root.dataset.desktopObserved = '1';
-        observeDesktopSlides(root, slides, imageSizes);
-      }
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle('is-active', idx === 0);
-      });
-      progress.textContent = `${slides.length} photos`;
-      return;
-    }
-
-    const flat = true;
+    const useFlat = mobileQuery.matches || reducedMotionQuery.matches;
 
     allSlides.forEach((slide, idx) => {
-      if (flat) {
+      if (useFlat) {
         const active = idx === current;
         slide.hidden = !active;
         slide.style.setProperty('--offset', '0');
@@ -252,11 +228,12 @@ function initResponsiveCarousel(root, imageUrls, trackingSession) {
         if (offset > half) offset -= total;
         else if (offset < -Math.floor((total - 1) / 2)) offset += total;
       }
-      slide.style.setProperty('--offset', offset);
-      slide.style.setProperty('--abs-offset', Math.abs(offset));
+      slide.style.setProperty('--offset', String(offset));
+      slide.style.setProperty('--abs-offset', String(Math.abs(offset)));
       slide.classList.toggle('is-active', offset === 0);
-      slide.style.zIndex = 10 - Math.abs(offset);
+      slide.style.zIndex = String(10 - Math.abs(offset));
     });
+
     dots.forEach((dot, idx) => {
       dot.classList.toggle('is-active', idx === current);
     });
@@ -425,8 +402,7 @@ function initSplineScene() {
   };
 
   if (!wrap) {
-    document.body.classList.add('loaded');
-    document.dispatchEvent(new CustomEvent('spline-ready'));
+    finishReveal();
     return;
   }
 
