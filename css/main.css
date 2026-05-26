@@ -78,18 +78,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
   touch-action: pan-y pinch-zoom;
-  --env-x: 0.5;
-  --env-y: 0.35;
-  --env-e: 0.25;
-  --scroll: 0;
 }
 
 body.loaded {
   opacity: 1;
-}
-
-body.fade-out {
-  opacity: 0;
 }
 
 body::before,
@@ -112,29 +104,6 @@ body::after {
   background:
     radial-gradient(120% 95% at 50% 0%, rgba(255, 255, 255, 0.65), transparent 60%),
     radial-gradient(120% 100% at 50% 100%, rgba(15, 23, 42, 0.06), transparent 64%);
-}
-
-.env-ambient,
-.env-vignette {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-}
-
-.env-ambient {
-  z-index: -2;
-  background:
-    radial-gradient(900px 700px at calc(var(--env-x) * 100%) calc(var(--env-y) * 100%), rgba(255, 255, 255, 0.85), transparent 62%),
-    radial-gradient(760px 560px at calc((1 - var(--env-x)) * 100%) calc((0.25 + var(--env-y) * 0.55) * 100%), rgba(229, 169, 60, 0.1), transparent 58%),
-    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 58%, var(--bg-2) 100%);
-  filter: saturate(1.02) contrast(1);
-}
-
-.env-vignette {
-  z-index: -1;
-  background:
-    radial-gradient(120% 95% at 50% 0%, rgba(255, 255, 255, 0.5), transparent 60%),
-    radial-gradient(120% 100% at 50% 100%, rgba(15, 23, 42, 0.05), transparent 64%);
 }
 
 .top-bar {
@@ -1087,6 +1056,14 @@ select.form-input option {
   width: 100%;
 }
 
+.spa-view[hidden] {
+  display: none !important;
+}
+
+.spa-view.is-active {
+  display: block;
+}
+
 .top-bar-home,
 body.has-spline .top-bar {
   background: rgba(248, 250, 252, 0.68);
@@ -1143,6 +1120,8 @@ body.no-spline-motion .spline-bg--full,
   border: none;
   outline: none;
   opacity: 1;
+  touch-action: none;
+  pointer-events: none;
 }
 
 .spline-bg--full.is-ready::after {

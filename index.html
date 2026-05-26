@@ -14,58 +14,286 @@
   <meta property="og:title" content="HMAYED">
   <meta property="og:description" content="Cinema-trained director and content strategist. High-end commercial production and brand visual authority.">
   <meta property="og:url" content="https://hmayed.online/">
-  <meta property="og:image" content="https://hmayed.online/hero-poster.jpg">
+  <meta property="og:image" content="https://hmayed.online/content/home/hero-poster.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="HMAYED">
   <meta name="twitter:description" content="Cinema-trained director and content strategist. High-end commercial production and brand visual authority.">
-  <meta name="twitter:image" content="https://hmayed.online/hero-poster.jpg">
-  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="twitter:image" content="https://hmayed.online/content/home/hero-poster.jpg">
+  <link rel="icon" type="image/png" href="content/favicon.png">
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link rel="preconnect" href="https://prod.spline.design" crossorigin>
-  <link rel="preload" href="main.css" as="style">
-  <link rel="preload" href="hero-poster.jpg" as="image" fetchpriority="high">
+  <link rel="preload" href="css/main.css" as="style">
+  <link rel="preload" href="content/home/hero-poster.jpg" as="image" fetchpriority="high">
   <link rel="preload" href="https://prod.spline.design/hXKO9HhrJc1acPnj/scene.splinecode" as="fetch" crossorigin>
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&display=swap"></noscript>
-  <script type="module" src="spline-loader.js"></script>
+  <script type="module" src="js/spline-loader.js"></script>
 </head>
 <body class="page-home has-spline">
   <div class="spline-bg spline-bg--full" aria-hidden="true">
-    <spline-viewer url="https://prod.spline.design/hXKO9HhrJc1acPnj/scene.splinecode"></spline-viewer>
+    <spline-viewer events-target="local" url="https://prod.spline.design/hXKO9HhrJc1acPnj/scene.splinecode"></spline-viewer>
   </div>
 
-  <header class="top-bar top-bar-home">
+  <header class="top-bar top-bar-home" id="appHeader">
+    <a href="/" class="back-btn" id="headerBack" aria-label="Back to home" hidden>
+      <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15 4 7.4 12 15 20l-1.4 1.4-7.6-7.6 7.6-7.6L15 4z"/></svg>
+    </a>
     <a href="/" class="logo">HMAYED</a>
+    <a href="#" class="nav-book-btn" id="headerBookNow" hidden>Book Now</a>
   </header>
 
-  <main class="main">
-    <div class="video-wrapper">
-      <div class="video-block">
-        <video class="hero-video" playsinline autoplay loop preload="none" poster="hero-poster.jpg"></video>
-        <button class="unmute-btn" id="unmuteBtn" type="button">
-          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4.5 7 8.5v7l5 4V4.5Zm1 2.4 2.8 2.2H18v3.8h-2.2L13 15.1V6.9ZM5 9.5H7v5H5v-5Z"/></svg>
-          <span>Sound</span>
-        </button>
-        <button class="replay-btn" id="replayBtn" type="button" aria-label="Replay video">
-          <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 5a7 7 0 1 1-4.95 11.95l1.06-1.06A5.5 5.5 0 1 0 12 6.5V9l4-3.5-4-3.5v2.5Z"/></svg>
-        </button>
-      </div>
-    </div>
+  <div id="spaViews">
+    <section id="view-home" class="spa-view is-active" data-route="/">
+      <main class="main">
+        <div class="video-wrapper">
+          <div class="video-block">
+            <video class="hero-video" playsinline autoplay loop preload="none" poster="content/home/hero-poster.jpg"></video>
+            <button class="unmute-btn" id="unmuteBtn" type="button">
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4.5 7 8.5v7l5 4V4.5Zm1 2.4 2.8 2.2H18v3.8h-2.2L13 15.1V6.9ZM5 9.5H7v5H5v-5Z"/></svg>
+              <span>Sound</span>
+            </button>
+            <button class="replay-btn" id="replayBtn" type="button" aria-label="Replay video">
+              <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 5a7 7 0 1 1-4.95 11.95l1.06-1.06A5.5 5.5 0 1 0 12 6.5V9l4-3.5-4-3.5v2.5Z"/></svg>
+            </button>
+          </div>
+        </div>
 
-    <div class="section-divider" aria-hidden="true"><span>Explore</span></div>
+        <div class="section-divider" aria-hidden="true"><span>Explore</span></div>
 
-    <div class="links-section">
-      <div class="links-foreground">
-        <div id="refractiveControlsRoot"></div>
-        <div class="footnote">- CINEMA -</div>
-      </div>
-    </div>
+        <div class="links-section">
+          <div class="links-foreground">
+            <div id="refractiveControlsRoot"></div>
+            <div class="footnote">- CINEMA -</div>
+          </div>
+        </div>
 
-    <div class="powered-by">Powered by Quantex AI Solutions</div>
-  </main>
+        <div class="powered-by">Powered by Quantex AI Solutions</div>
+      </main>
+    </section>
 
-  <script defer src="refractive-controls.js"></script>
-  <script defer src="main.js"></script>
+    <section id="view-about" class="spa-view" data-route="/about" hidden>
+      <main class="main main-about">
+        <div class="content-section about-section">
+          <div class="book-header">
+            <h1 class="book-title">About Me</h1>
+            <div class="book-subtitle">Documentary &middot; Cinematography &middot; Strategy</div>
+          </div>
+
+          <figure class="about-portrait">
+            <img src="content/hmyd.webp" alt="Hmayed" width="1365" height="911" decoding="async" loading="lazy">
+          </figure>
+
+          <p class="about-body">I am a documentary filmmaker, cinematographer, and content strategist who bridges the gap between cinematic storytelling and digital marketing. Having cut my teeth in the demanding world of television series production, I bring high-end cinematography expertise to every project I touch. In parallel, I build robust social media and marketing campaigns that transform creative visuals into tangible results. Whether collaborating with major agencies or partnering directly with business owners, my focus remains the same: crafting compelling narratives that captivate audiences and flawlessly achieve your strategic goals.</p>
+
+          <div class="about-book-chooser">
+            <a class="about-book-btn" href="/content-creation#ccBookingForm">Content Creation</a>
+            <a class="about-book-btn" href="/cinema#cinBookingForm">Cinema Session</a>
+          </div>
+
+          <div class="footnote">- VISUAL STORYTELLING -</div>
+        </div>
+
+        <div class="powered-by">Powered by Quantex AI Solutions</div>
+      </main>
+    </section>
+
+    <section id="view-cinema" class="spa-view" data-route="/cinema" hidden>
+      <main class="main">
+        <div class="section-divider" aria-hidden="true"><span>Cinema</span></div>
+        <div class="video-wrapper">
+          <div class="video-block">
+            <div class="media-carousel" data-carousel-key="cinema" aria-label="Cinema portfolio carousel">
+              <button class="carousel-nav carousel-prev" type="button" aria-label="Previous photo">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 6l-6 6 6 6 1.4-1.4-4.6-4.6 4.6-4.6L14 6z"/></svg>
+              </button>
+              <div class="carousel-viewport"><div class="carousel-track"></div></div>
+              <button class="carousel-nav carousel-next" type="button" aria-label="Next photo">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 6l6 6-6 6-1.4-1.4 4.6-4.6-4.6-4.6L10 6z"/></svg>
+              </button>
+              <div class="carousel-dots" aria-label="Carousel pagination"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="book-header">
+            <h1 class="book-title">Book Your<br>Cinema Session</h1>
+            <div class="book-subtitle">Let's tell your story on screen</div>
+          </div>
+          <form class="booking-form" id="cinBookingForm">
+            <div class="form-group">
+              <label class="form-label" for="cinName">Full Name</label>
+              <input type="text" id="cinName" name="name" class="form-input" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cinBusinessType">Project Type</label>
+              <select id="cinBusinessType" name="businessType" class="form-input" required>
+                <option value="" disabled selected>Select your project type</option>
+                <option value="brandfilm">Brand Film</option>
+                <option value="commercial">Commercial</option>
+                <option value="musicvideo">Music Video</option>
+                <option value="eventfilm">Event Film</option>
+                <option value="documentary">Documentary</option>
+                <option value="shortfilm">Short Film</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cinPhone">Phone Number</label>
+              <div class="phone-row">
+                <select id="cinCountryCode" name="countryCode" class="form-input country-code-input" required>
+                  <option value="+961" selected>+961</option>
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                  <option value="+971">+971</option>
+                  <option value="+966">+966</option>
+                  <option value="+20">+20</option>
+                </select>
+                <input type="tel" id="cinPhone" name="phone" class="form-input phone-number-input" placeholder="70 123 456" inputmode="tel" autocomplete="tel-national" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cinEmail">Email Address</label>
+              <input type="email" id="cinEmail" name="email" class="form-input" placeholder="you@example.com" required>
+            </div>
+            <button type="submit" class="submit-btn" id="cinSubmitBtn">
+              <span>Reserve Your Spot</span>
+              <span class="submit-icon" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M13 5l7 7-7 7-1.4-1.4 5.6-5.6H4v-2h13.2l-5.6-5.6L13 5z"/></svg></span>
+            </button>
+            <div class="form-message" id="cinFormMessage" aria-live="polite"></div>
+          </form>
+          <div class="thank-you-state" id="cinThankYouState" aria-live="polite">
+            <h2 class="thank-you-title">Request Received</h2>
+            <p class="thank-you-text">Thanks, <span class="thank-you-name" id="cinThankYouName">there</span>. We received your details and will contact you within 24 hours.</p>
+          </div>
+          <div class="footnote">- CINEMATIC STORYTELLING -</div>
+        </div>
+        <div class="powered-by">Powered by Quantex AI Solutions</div>
+      </main>
+    </section>
+
+    <section id="view-content-creation" class="spa-view" data-route="/content-creation" hidden>
+      <main class="main">
+        <div class="section-divider" aria-hidden="true"><span>Talking Head</span></div>
+        <div class="video-wrapper">
+          <div class="video-block">
+            <div class="media-carousel" data-carousel-key="talking-head" aria-label="Talking Head portfolio carousel">
+              <button class="carousel-nav carousel-prev" type="button" aria-label="Previous photo">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 6l-6 6 6 6 1.4-1.4-4.6-4.6 4.6-4.6L14 6z"/></svg>
+              </button>
+              <div class="carousel-viewport"><div class="carousel-track"></div></div>
+              <button class="carousel-nav carousel-next" type="button" aria-label="Next photo">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 6l6 6-6 6-1.4-1.4 4.6-4.6-4.6-4.6L10 6z"/></svg>
+              </button>
+              <div class="carousel-dots" aria-label="Carousel pagination"></div>
+            </div>
+          </div>
+        </div>
+        <div class="section-divider" aria-hidden="true"><span>Podcast</span></div>
+        <div class="video-wrapper">
+          <div class="video-block">
+            <div class="media-carousel" data-carousel-key="podcast" aria-label="Podcast portfolio carousel">
+              <button class="carousel-nav carousel-prev" type="button" aria-label="Previous photo">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 6l-6 6 6 6 1.4-1.4-4.6-4.6 4.6-4.6L14 6z"/></svg>
+              </button>
+              <div class="carousel-viewport"><div class="carousel-track"></div></div>
+              <button class="carousel-nav carousel-next" type="button" aria-label="Next photo">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 6l6 6-6 6-1.4-1.4 4.6-4.6-4.6-4.6L10 6z"/></svg>
+              </button>
+              <div class="carousel-dots" aria-label="Carousel pagination"></div>
+            </div>
+          </div>
+        </div>
+        <div class="section-divider" aria-hidden="true"><span>Food</span></div>
+        <div class="video-wrapper">
+          <div class="video-block">
+            <div class="media-carousel" data-carousel-key="food" aria-label="Food portfolio carousel">
+              <button class="carousel-nav carousel-prev" type="button" aria-label="Previous photo">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 6l-6 6 6 6 1.4-1.4-4.6-4.6 4.6-4.6L14 6z"/></svg>
+              </button>
+              <div class="carousel-viewport"><div class="carousel-track"></div></div>
+              <button class="carousel-nav carousel-next" type="button" aria-label="Next photo">
+                <svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 6l6 6-6 6-1.4-1.4 4.6-4.6-4.6-4.6L10 6z"/></svg>
+              </button>
+              <div class="carousel-dots" aria-label="Carousel pagination"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="book-header">
+            <h1 class="book-title">Book Your<br>Free Consultation</h1>
+            <div class="book-subtitle">Let's create something extraordinary</div>
+          </div>
+          <form class="booking-form" id="ccBookingForm">
+            <div class="form-group">
+              <label class="form-label" for="ccName">Full Name</label>
+              <input type="text" id="ccName" name="name" class="form-input" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ccBusinessType">Business Type</label>
+              <select id="ccBusinessType" name="businessType" class="form-input" required>
+                <option value="" disabled selected>Select your industry</option>
+                <option value="fashion">Fashion &amp; Apparel</option>
+                <option value="beauty">Beauty &amp; Cosmetics</option>
+                <option value="food">Food &amp; Beverage</option>
+                <option value="fitness">Fitness &amp; Wellness</option>
+                <option value="tech">Technology &amp; SaaS</option>
+                <option value="realestate">Real Estate</option>
+                <option value="hospitality">Hospitality &amp; Travel</option>
+                <option value="education">Education &amp; Coaching</option>
+                <option value="entertainment">Entertainment &amp; Media</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ccPhone">Phone Number</label>
+              <div class="phone-row">
+                <select id="ccCountryCode" name="countryCode" class="form-input country-code-input" required>
+                  <option value="+961" selected>+961</option>
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                  <option value="+971">+971</option>
+                  <option value="+966">+966</option>
+                  <option value="+20">+20</option>
+                </select>
+                <input type="tel" id="ccPhone" name="phone" class="form-input phone-number-input" placeholder="70 123 456" inputmode="tel" autocomplete="tel-national" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ccEmail">Email Address</label>
+              <input type="email" id="ccEmail" name="email" class="form-input" placeholder="you@example.com" required>
+            </div>
+            <button type="submit" class="submit-btn" id="ccSubmitBtn">
+              <span>Reserve Your Spot</span>
+              <span class="submit-icon" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M13 5l7 7-7 7-1.4-1.4 5.6-5.6H4v-2h13.2l-5.6-5.6L13 5z"/></svg></span>
+            </button>
+            <div class="form-message" id="ccFormMessage" aria-live="polite"></div>
+          </form>
+          <div class="thank-you-state" id="ccThankYouState" aria-live="polite">
+            <h2 class="thank-you-title">Request Received</h2>
+            <p class="thank-you-text">Thanks, <span class="thank-you-name" id="ccThankYouName">there</span>. We received your details and will contact you within 24 hours.</p>
+          </div>
+          <div class="footnote">- ELEVATE YOUR BRAND -</div>
+        </div>
+        <div class="powered-by">Powered by Quantex AI Solutions</div>
+      </main>
+    </section>
+
+    <section id="view-thank-you" class="spa-view" data-route="/thank-you" hidden>
+      <main class="card">
+        <h1>Thank You</h1>
+        <p id="thankYouMessage">Your request was received successfully. We will contact you within 24 hours.</p>
+        <div class="session" id="sessionTag">SESSION</div>
+        <div class="actions">
+          <a class="btn" href="/">Back Home</a>
+          <a class="btn" id="sessionBack" href="/content-creation">Back To Session</a>
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <script defer src="js/main.js"></script>
 </body>
 </html>
