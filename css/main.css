@@ -190,6 +190,11 @@ body::after {
   box-shadow: 0 4px 14px var(--shadow);
 }
 
+.back-btn[hidden],
+.top-bar-home .back-btn {
+  display: none !important;
+}
+
 .main {
   position: relative;
   z-index: 5;

@@ -428,11 +428,31 @@ function updateDocumentMeta(route) {
   document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', route.description);
 }
 
+const HEADER_BACK_MARKUP =
+  '<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15 4 7.4 12 15 20l-1.4 1.4-7.6-7.6 7.6-7.6L15 4z"/></svg>';
+
+function ensureHeaderBack(header, show) {
+  let backBtn = document.getElementById('headerBack');
+  if (!show) {
+    backBtn?.remove();
+    return;
+  }
+
+  if (!backBtn) {
+    backBtn = document.createElement('a');
+    backBtn.href = '/';
+    backBtn.className = 'back-btn';
+    backBtn.id = 'headerBack';
+    backBtn.setAttribute('aria-label', 'Back to home');
+    backBtn.innerHTML = HEADER_BACK_MARKUP;
+    header.insertBefore(backBtn, header.firstChild);
+  }
+}
+
 function updateHeader(route) {
   const header = document.getElementById('appHeader');
-  const backBtn = document.getElementById('headerBack');
   const bookBtn = document.getElementById('headerBookNow');
-  if (!header || !backBtn || !bookBtn) return;
+  if (!header || !bookBtn) return;
 
   if (route.header === 'none') {
     header.hidden = true;
@@ -441,7 +461,7 @@ function updateHeader(route) {
 
   header.hidden = false;
   header.classList.toggle('top-bar-home', route.header === 'home');
-  backBtn.hidden = route.header === 'home';
+  ensureHeaderBack(header, route.header !== 'home');
   bookBtn.hidden = route.header !== 'book';
 
   if (route.bookTargetId) {
