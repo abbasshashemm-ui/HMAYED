@@ -67,12 +67,15 @@
       </div>
       <div class="frame mt-8">
         <div class="media media--16x9" data-clip>
-          <video muted playsinline loop preload="none" controls poster="/assets/video/intro-poster.jpg" aria-label="Mohammad Hmayed introduces his content creation work, with on-screen captions">
-            <source src="/assets/video/intro-480.webm" type="video/webm" media="(max-width: 767px)">
-            <source src="/assets/video/intro-720.webm" type="video/webm">
-            <source src="/assets/video/intro-720.mp4" type="video/mp4">
+          <video muted playsinline loop preload="none" controls poster="/assets/video/intro-poster.jpg" aria-label="Mohammad Hmayed introduces his content creation work. Captions are burned into the video.">
+            <source src="/assets/video/intro-mobile.webm" type="video/webm" media="(max-width: 767px)">
+            <source src="/assets/video/intro-desktop.webm" type="video/webm">
+            <source src="/assets/video/intro.mp4" type="video/mp4">
           </video>
-          <button class="clip__toggle" type="button" data-clip-toggle hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z" fill="currentColor"/></svg><span>Pause</span></button>
+          <div class="clip__controls">
+            <button class="clip__btn" type="button" data-clip-sound aria-pressed="false" hidden><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 9.5H7l4.5-4v13L7 14.5H3.5z" fill="currentColor"/><path d="m15.5 9.5 5 5m0-5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/></svg><span>Sound</span></button>
+            <button class="clip__btn" type="button" data-clip-toggle hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z" fill="currentColor"/></svg><span>Pause</span></button>
+          </div>
         </div>
       </div>
     </div>

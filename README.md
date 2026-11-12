@@ -16,7 +16,7 @@ assets/js/site.js        menu, YouTube click-to-load, work filters, intro clip, 
 assets/brand/            logos, monogram, icons, favicon
 assets/fonts/            self-hosted Inter, Roboto Condensed and Cairo (Arabic)
 assets/img/              generated responsive WebP images (do not edit by hand)
-assets/video/            intro clip (WebM 720p/480p + MP4 fallback + poster)
+assets/video/            intro clip with audio (desktop/mobile WebM, MP4 fallback, poster)
 content/                 source originals. Not published (see _config.yml)
 tools/                   maintenance scripts. Not published
 ```

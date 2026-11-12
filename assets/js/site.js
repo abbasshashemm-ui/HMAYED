@@ -21,6 +21,8 @@
 
   const ICON_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4v16L20 12z" fill="currentColor"/></svg>';
   const ICON_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z" fill="currentColor"/></svg>';
+  const ICON_SOUND = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 9.5H7l4.5-4v13L7 14.5H3.5z" fill="currentColor"/><path d="M15 9a4.2 4.2 0 0 1 0 6M17.5 6.5a7.8 7.8 0 0 1 0 11" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/></svg>';
+  const ICON_MUTED = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 9.5H7l4.5-4v13L7 14.5H3.5z" fill="currentColor"/><path d="m15.5 9.5 5 5m0-5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/></svg>';
 
   /* Header: hairline once scrolled, and the mobile menu ------------------ */
   function initHeader() {
@@ -135,11 +137,12 @@
     });
   }
 
-  /* Self-hosted clip: muted autoplay while visible, with a pause control - */
+  /* Self-hosted clip: muted autoplay while visible, pause and sound controls */
   function initClips() {
     $$('[data-clip]').forEach((box) => {
       const video = $('video', box);
       const button = $('[data-clip-toggle]', box);
+      const sound = $('[data-clip-sound]', box);
       if (!video || !button) return;
 
       video.removeAttribute('controls');
@@ -147,6 +150,26 @@
 
       // Respect reduced motion and data saver: start paused, play on request.
       let userPaused = reducedMotion.matches || prefersSaveData();
+
+      if (sound) {
+        sound.hidden = false;
+        const renderSound = () => {
+          const on = !video.muted;
+          sound.setAttribute('aria-pressed', String(on));
+          sound.innerHTML = `${on ? ICON_SOUND : ICON_MUTED}<span>Sound</span>`;
+        };
+        sound.addEventListener('click', () => {
+          video.muted = !video.muted;
+          if (!video.muted && video.paused) {
+            userPaused = false;
+            video.play().catch(() => {});
+          }
+          renderSound();
+          track(video.muted ? 'video_mute' : 'video_unmute', { where: 'intro' });
+        });
+        video.addEventListener('volumechange', renderSound);
+        renderSound();
+      }
 
       const render = () => {
         const playing = !video.paused;

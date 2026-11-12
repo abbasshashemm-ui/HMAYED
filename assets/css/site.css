@@ -929,10 +929,15 @@
   }
 
   /* Inline video clip (self-hosted) ------------------------------------- */
-  .clip__toggle {
+  .clip__controls {
     position: absolute;
     right: var(--space-3);
     bottom: var(--space-3);
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .clip__btn {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
@@ -947,15 +952,21 @@
     font-size: var(--step--2);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
 
-  .clip__toggle svg {
+  .clip__btn svg {
     width: 1rem;
     height: 1rem;
   }
 
-  .clip__toggle:hover {
+  .clip__btn:hover {
     background-color: var(--ink-1000);
+  }
+
+  .clip__btn[aria-pressed="true"] {
+    background-color: var(--bone-100);
+    color: var(--ink-900);
   }
 
   /* Work grid ------------------------------------------------------------ */
