@@ -1,0 +1,8 @@
+# GitHub Pages builds this repo with Jekyll. The pages are plain HTML with no
+# front matter, so Jekyll copies them unchanged. Folders starting with "_"
+# (like _partials) are skipped automatically; these are excluded as well so
+# source originals and tooling are not published.
+exclude:
+  - content/
+  - tools/
+  - README.md

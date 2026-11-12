@@ -1,0 +1,5 @@
+assets/video/intro-source.*
+.DS_Store
+Thumbs.db
+node_modules/
+__pycache__/
