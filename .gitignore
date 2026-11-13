@@ -1,5 +1,5 @@
+assets/video/intro-source.*
 .DS_Store
 Thumbs.db
-desktop.ini
-*.tmp
-content/home/main-source.*
+node_modules/
+__pycache__/
